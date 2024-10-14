@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.DAO
+namespace BusinessLogic.Interfaces
 {
-    public class Earphone : SingletonBase<Earphone>
+    internal interface IKitServices
     {
     }
 }

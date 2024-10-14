@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Repository.Interfaces
 {
-    public interface IKeyboardRepository
+    public interface IEarphoneRepository
     {
-        Task<IEnumerable<KeyBoard>> GetListAll();
-        Task<KeyBoard> GetById(int id);
-        Task Add(KeyBoard item);
-        Task Update(KeyBoard item);
+        Task<IEnumerable<Earphone>> GetListAll();
+        Task<Earphone> GetById(int id);
+        Task Add(Earphone item);
+        Task Update(Earphone item);
         Task Delete(int id);
     }
 }
