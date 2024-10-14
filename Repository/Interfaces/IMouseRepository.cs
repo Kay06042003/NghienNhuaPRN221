@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Repository.Interfaces
 {
-    public interface IKeyboardRepository
+    public interface IMouseRepository
     {
-        Task<IEnumerable<KeyBoard>> GetListAll();
-        Task<KeyBoard> GetById(int id);
-        Task Add(KeyBoard item);
-        Task Update(KeyBoard item);
+        Task<IEnumerable<Mouse>> GetListAll();
+        Task<Mouse> GetById(int id);
+        Task Add(Mouse item);
+        Task Update(Mouse item);
         Task Delete(int id);
     }
 }
