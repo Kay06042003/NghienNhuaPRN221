@@ -120,6 +120,7 @@
 .aside-left {
     /* flex-basis: 25%; */
     padding-left: 10px;
+    max-width: 362px;
 }
 
 .product-list {

@@ -45,7 +45,7 @@ namespace DataAccess.DAO
             {
                 throw new Exception("Mouse not found");
             }
-            _context.Keycaps.Remove(mouse);
+            _context.Mice.Remove(mouse);
             await _context.SaveChangesAsync();
         }
     }
