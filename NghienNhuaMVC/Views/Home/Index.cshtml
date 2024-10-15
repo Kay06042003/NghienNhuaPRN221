@@ -1,8 +1,209 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<Models.Product>
+@using System.Globalization;
+@{
+    ViewData["Title"] = "Home";
 }
+<ul class="notifications"></ul>
+<section class="slide">
+    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="~/Images/Product/z5185441284919_0c9de50a72291271ba6abc0ee625ec7a.jpg" class="d-block w-100"
+                    alt="">
+            </div>
+            <div class="carousel-item">
+                <img src="~/Images/Product/z5185441293199_8799c346729297dbf2de54e0499ef749.jpg" class="d-block w-100"
+                    alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="~/Images/Product/z5185441311161_d9cd1dc9d1c4fb608462e26e1857b99d.jpg" class="d-block w-100"
+                    alt="...">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</section>
+<div class="container-fuild">
+    <div class="container-xxl">
+        <div class="mainProduct">
+            <div class="product_container">
+                <a href="/Product/Keyboard"><img
+                        src="~/Images/Product/ban-phim-co-akko-3098n-multi-modes-world-tour-london-ava.jpg"
+                        alt="akko"></a>
+                <h2>KEYBOARD</h2>
+            </div>
+            <div class="product_container">
+                <a href="/Product/Kit"><img src="~/Images/Product/kit_5.jpg" alt="akko"></a>
+                <h2>KIT</h2>
+            </div>
+            <div class="product_container">
+                <a href="/Product/Key-cap"><img src="~/Images/Product/akko-keycap-neon-02.jpg" alt="akko"></a>
+                <h2>KEYCAP</h2>
+            </div>
+            <div class="product_container">
+                <a href="/Product/Switch"><img src="~/Images/Product/switch_1.jpg" alt="akko"></a>
+                <h2>Switch</h2>
+            </div>
+        </div>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    </div>
 </div>
+
+<div class="container-fuild">
+    <div class="container-xxl">
+        <section class="newProduct">
+            <div class="headingTitle">
+                <i class="fa-regular fa-star"></i>
+                <h2>SẢN PHẨM MỚI</h2>
+            </div>
+            @{
+                foreach (var item in Model)
+                {
+                    string name = "";
+                    if (item.ProCategory == "Keyboard")
+                    {
+                        name = "Keyboard";
+                    }
+                    else if (item.ProCategory == "Kit")
+                    {
+                        name = "Kit-ban-phim";
+                    }
+                    else if (item.ProCategory == "Keycap")
+                    {
+                        name = "Key-cap";
+                    }
+                    else if (item.ProCategory == "Switch")
+                    {
+                        name = "Switch";
+                    }
+                    else if (item.ProCategory == "Mouse")
+                    {
+                        name = "Mouse";
+                    }
+                    else if (item.ProCategory == "Earphone")
+                    {
+                        name = "Earphone";
+                    }
+                    <div class="card_Product mt-3">
+                        @{
+                            if(item.ProDiscount != "0")
+                            {
+                                <div class="discountIndex">
+                                    <div class="on-slace">
+                                        <span>-@item.ProDiscount %</span>
+                                    </div>
+                                </div>
+                            }
+                        }
+                                <div class="card_top">
+                                    <a href="/Product/ProductDetail/@item.ProId?proCategory=@name">
+                                        <div>
+                                            @{
+                                                String[] list = item.ProImage.Split("&");
+                                                String image = list[0];
+
+                                            }
+                                            <img src="~/Images/Product/@image" alt="">
+                                        </div>
+                                        <p class="card_title">
+                                            @item.ProName
+                                        </p>
+                                    </a>
+                                </div>
+                                <div class="card_body">
+                                    @{
+                                        
+                                        if (item.ProDiscount != "0")
+                                        {
+                                            int price = Convert.ToInt32(item.ProPrice);
+                                            int discount = Convert.ToInt32(item.ProDiscount);
+                                            int priceDiscount = price + (price * discount / 100);
+                                            <strike class="price_reduce"><i class="fa-solid fa-dong-sign"></i>
+                                        @priceDiscount.ToString("#,0", CultureInfo.CreateSpecificCulture("vi-VN"))
+                                        </strike>
+                                                
+                                        }
+                                        <span class="price text fw-bold"><i class="fa-solid fa-dong-sign">
+                                        @{
+                                            int price2 = Convert.ToInt32(item.ProPrice);
+                                        }
+                                        @price2.ToString("#,0", CultureInfo.CreateSpecificCulture("vi-VN"));
+                                                </i></span>
+
+                                    }
+                                </div>
+
+                                <div class="card_bot">
+                                    @{
+                                        if(item.ProQuantity != 0)
+                                        {
+                                            <p class="card_status" style="color: rgb(0, 128, 0);"><i class="fa-solid fa-check"></i>Còn Hàng</p>
+
+                                        }
+                                        else
+                                        {
+                                            <p class="card_status" style="color:red;"><i class="fa-solid fa-phone"></i>Hết Hàng</p>
+                                        }
+                                    }
+                                
+
+                                </div>
+
+                    </div>
+
+
+                }
+            }
+            </section>
+        </div>
+    </div>
+
+    </section>
+    <section class="product_bg">
+        <div class="product_bg-content">
+            <img src="~/Images/Product/z5185428478363_21b455def4be073d65c6093fcba3279a.jpg" alt="">
+        </div>
+        <div class="product_bg-content">
+            <img src="~/Images/Product/z5185428486396_bc0e64f8bd892441aae2e7a21dea3052.jpg" alt="">
+        </div>
+    </section>
+    <div class="container-fuild">
+        <div class="container-xxl">
+            <section class="feedback">
+                <div class="feedback_container">
+                    <div class="feedback_content">
+                        <div class="feedback_content-icon">
+                            <i class="fa-solid fa-truck-fast"></i>
+                        </div>
+                        <h2>MIỄN PHÍ VẬN CHUYỂN</h2>
+                        <p>Tất cả sản phẩm được đặt hàng tại Akko.vn đều được miễn phí vận chuyển. Khách hàng được kiểm tra
+                            hàng trước khi thanh toán.</p>
+                    </div>
+                    <div class="feedback_content feedback_line">
+                        <div class="feedback_content-icon">
+                            <i class="fa-brands fa-hire-a-helper"></i>
+                        </div>
+                        <h2>HỖ TRỢ 24/7</h2>
+                        <p>Hỗ trợ khách hàng trực tuyến về mua hàng cũng như các thắc mắc về sản phẩm .</p>
+                    </div>
+                    <div class="feedback_content">
+                        <div class="feedback_content-icon">
+                            <i class="fa-solid fa-file-contract"></i>
+                        </div>
+                        <h2>CHẾ ĐỘ BẢO HÀNH VƯỢT TRỘI</h2>
+                        <p>Tất cả sản phẩm Akko đều được bảo hành 12 tháng, 1 đổi 1. Trung tâm bảo hành toàn quốc</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </div>

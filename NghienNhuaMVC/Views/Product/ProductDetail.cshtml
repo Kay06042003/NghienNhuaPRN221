@@ -1,0 +1,454 @@
+@model BusinessLogic.ViewModels.ProductDetailViewModel
+@using System.Globalization;
+@{
+    ViewData["Title"] = "ProductDetail";
+}
+
+<ul class="notifications"></ul>
+<section class="py-2" style="margin-top: 120px">
+    <div class="container-xxl">
+        <div class="row">
+            <div class="col-md-3 ">
+                <div class="row">
+                    <div class="aside-left">
+                        <div class="product-list">
+                            <ul>
+                                <li><a asp-action="Keyboard">Keyboard</a></li>
+                                <li><a asp-action="Kit">Kit Bàn Phím</a></li>
+                                <li><a asp-action="Keycap">Keycap</a></li>
+                                <li><a asp-action="Switch">Switch</a></li>
+                                <li><a asp-action="Mouse">Mouse</a></li>
+                                <li><a asp-action="Earphone">Earphone</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9 border-start mb-5">
+                <div class="row gx-5 pb-5 px-3">
+                    <aside class="col-md-6">
+
+                        <div class="galleryImage">
+                            <div class="discontContainer">
+                                @if (Model.Product.ProDiscount != "0")
+                                {
+                                    <div class="discount">
+                                        <span class="text">-@Model.Product.ProDiscount%</span>
+                                    </div>
+                                }
+                            </div>
+
+                            <div class="topGallery" id="topGallery">
+                                @{
+                                    string[] image = Model.Product.ProImage.Split("&");
+                                    <div class="imageItems" onmouseover="hovertopGallery()">
+                                        <img class="itemsImg" src="~/Images/Product/@image[0]" alt="">
+                                    </div>
+                                    for (int i = 0; i < image.Length; i++)
+                                    {
+                                        <div class="imageItems">
+                                            <img class="itemsImg" src="~/Images/Product/@image[i]" alt="">
+                                        </div>
+                                    }
+                                    <a class="prev btnGallery" onclick="plusSlides(-1)">&#10094;</a>
+                                    <a class="next btnGallery" onclick="plusSlides(1)">&#10095;</a>
+                                }
+
+                            </div>
+                            <div class="thumbPhoto" onmouseover="hovertopGallery()">
+                                @for (int i = 0; i < image.Length; i++)
+                                {
+                                    <div onclick="currentSlide(@i + 1)" class="thumbImage">
+                                        <img class="itemsImg thumbImage_Items" src="~/Images/Product/@image[i]" alt="">
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+
+                        <!-- thumbs-wrap.// -->
+                        <!-- gallery-wrap .end// -->
+                    </aside>
+                    <main class="col-md-6">
+                        <div class="ps-lg-3">
+                            <a class="title text-muted text-uppercase text-decoration-none" href="/Product">Trang
+                                Chủ</a> / <a class="title text-muted text-uppercase text-decoration-none"
+                                href="#!">@Model.Product.ProCategory</a>
+                            </a>
+                            <h4 class="titleProduct">
+                                @Model.Product.ProName
+                            </h4>
+                            <div class="d-flex">
+                                <div class="vr my-3" style="width: 50px; height: 2px; background-color: #e5e5e5;"></div>
+                            </div>
+                            <div class="mb-3">
+                                @{
+                                    if (Model.Product.ProDiscount != "0")
+                                    {
+                                        int price = Convert.ToInt32(Model.Product.ProPrice);
+                                        int discount = Convert.ToInt32(Model.Product.ProDiscount);
+                                        int priceBeforeDiscount = price + (price * discount / 100);
+                                        <span class="h5 text-decoration-line-through text-muted fs-4 text">
+                                            
+                                            <p class="d-inline text">
+                                                ₫@priceBeforeDiscount.ToString("#,0", CultureInfo.CreateSpecificCulture("vi-VN"))</p>
+                                        </span>
+                                    }
+                                }
+                                <span class="h5 ms-2  fs-4 text">
+                                    @{
+                                        int price2 = Convert.ToInt32(Model.Product.ProPrice);
+                                    }
+                                    <p class="d-inline text">₫@price2.ToString("#,0", CultureInfo.CreateSpecificCulture("vi-VN"))</p>
+                                    </p>
+                                </span>
+                            </div>
+                            <div>
+                                <h5 class="text-danger bg-light d-inline">Khuyến Mãi:</h4>
+                                    <ul>
+                                        <li class="my-2">Freeship toàn quốc khi đặt hàng tại Nghiennghua.vn</li>
+                                        <li class="my-2">Chế độ bảo hành 1 đổi 1 trong suốt thời gian bảo hành</li>
+                                        <li class="my-2">Chi nhánh bảo hành 3 miền: Bắc – Trung – Nam</li>
+                                    </ul>
+                            </div>
+                            <hr />
+                            <p class="mb-2 d-block">Kho: @Model.Product.ProQuantity</p>
+                            <form method="post" asp-action="AddToCart">
+                                <input type="hidden" asp-for="Product.ProId" value="@Model.Product.ProId" />
+                                <input type="hidden" asp-for="Product.ProCategory" value="@Model.Product.ProCategory" />
+                                <div class="row mb-4">
+                                    <!-- col.// -->
+                                    <div class="col-md-4 col-6 mb-3">
+                                        <label class="mb-2 d-block">Số lượng</label>
+                                        <div class="input-group mb-1" style="width: 170px;">
+                                            <button class="btn btn-white border border-secondary px-3" type="button"
+                                                id="button-addon1" data-mdb-ripple-color="dark">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                            <!-- <input type="text" class="form-control text-center border border-secondary" placeholder="14"
+                                                      aria-label="Example text with button addon" aria-describedby="button-addon1" /> -->
+                                            <input type="number" asp-for="Product.ProQuantity"
+                                                class="form-control text-center border border-secondary" value="1"
+                                                placeholder="1" aria-label="Example text with button addon"
+                                                aria-describedby="button-addon1" id="quantityInput" readonly />
+                                            <button class="btn btn-white border border-secondary px-3" type="button"
+                                                id="button-addon2" data-mdb-ripple-color="dark">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--<i class="me-1 fa fa-shopping-basket"></i>-->
+                                <input type="submit" name="btnAddCart" class="btn btn-primary shadow-0"
+                                    value="Thêm vào giỏ hàng" />
+                            </form>
+                        </div>
+                    </main>
+                </div>
+                <div class="row gx-4">
+                    <div class="col-lg-8 mb-4">
+                        <div class="border rounded-2 px-3 py-2 bg-white">
+                            <!-- Pills navs -->
+                            <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
+                                <li class="nav-item d-flex" role="presentation">
+                                    <a class="nav-link d-flex align-items-center justify-content-center w-100 active"
+                                        id="ex1-tab-1" data-mdb-toggle="pill" href="#ex1-pills-1" role="tab"
+                                        aria-controls="ex1-pills-1" aria-selected="true">Mô Tả</a>
+                                </li>
+                            </ul>
+                            <!-- Pills navs -->
+
+                            <!-- Pills content -->
+
+                            <div class="tab-content" id="ex1-content">
+                                <div class="tab-pane fade show active" id="ex1-pills-1" role="tabpanel"
+                                    aria-labelledby="ex1-tab-1">
+                                    <p>
+                                        @Model.Product.ProDescription
+                                    </p>
+                                    @{
+                                        String category = Model.Product.ProCategory;
+                                        if (category.Equals("Keyboard"))
+                                        {
+                                            <table class="table border mt-3 mb-2">
+                                                <tr>
+                                                    <th class="py-2">Led:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.KeyBoard.KbLed
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="py-2">Mode:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.KeyBoard.KbMode
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="py-2">Switch:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.KeyBoard.KbSwitch
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="py-2">Keycap:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.KeyBoard.KbKeycap
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="py-2">Plate:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.KeyBoard.KbPlate
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="py-2">Case:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.KeyBoard.KbCase
+                                                    </td>
+                                                </tr>
+
+                                            </table>
+
+                                        }
+                                        else if (category.Equals("Kit"))
+                                        {
+                                            <table class="table border mt-3 mb-2">
+                                                <tr>
+                                                    <th class="py-2">Layout:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.Kit.KitLayout
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="py-2">Mạch:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.Kit.KitCircuit
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="py-2">Plate:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.Kit.KitPlate
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="py-2">Mode:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.Kit.KitMode
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="py-2">Case:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.Kit.KitCase
+                                                    </td>
+                                                </tr>
+                                            </table>
+
+                                        }
+                                        else if (category.Equals("Keycap"))
+                                        {
+                                            <table class="table border mt-3 mb-2">
+                                                <tr>
+                                                    <th class="py-2">Chất Liệu:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.Keycap.KcMaterial
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="py-2">Profile:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.Keycap.KcLayout </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="py-2">Độ dày:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.Keycap.KcThickness
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="py-2">Độ bền:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.Keycap.KcReliability
+                                                    </td>
+                                                </tr>
+                                            </table>
+
+                                        }
+                                        else if (category.Equals("Switch"))
+                                        {
+                                            <table class="table border mt-3 mb-2">
+                                                <tr>
+                                                    <th class="py-2">Pin:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.Switch.SwitchPin
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="py-2">Type:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.Switch.SwitchType
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="py-2">Lò xo:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.Switch.SwitchSpring gam
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="py-2">Độ bền:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.Switch.SwitchReliability triệu lần nhấn
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="py-2">Hành Trình:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.Switch.SwitchDepth mm
+                                                    </td>
+                                                </tr>
+                                            </table>
+
+                                        }
+                                        else if (category.Equals("Mouse"))
+                                        {
+                                            <table class="table border mt-3 mb-2">
+                                                <tr>
+                                                    <th class="py-2">DPI:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.Mouse.MouseDpi
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="py-2">Độ dài dây:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.Mouse.MouseWireLength
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="py-2">Led:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.Mouse.MouseLed
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="py-2">Loại pin:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.Mouse.MouseTypeBattery
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="py-2">Khối lượng:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.Mouse.MouseWeight
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="py-2">Khả năng tương thích:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.Mouse.MouseCompatibility
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        }
+                                        else
+                                        {
+                                            <table class="table border mt-3 mb-2">
+                                                <tr>
+                                                    <th class="py-2">Loại tai nghe:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.Earphone.EarType
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="py-2">Cổng kết nối::</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.Earphone.EarPlug
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="py-2">Độ tương thích:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.Earphone.EarCompatibility
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="py-2">Tính đa dụng:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.Earphone.EarUtility
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="py-2">Kết nối:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.Earphone.EarConnect
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="py-2">Điều khiển:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.Earphone.EarControl
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="py-2">Cổng sạc:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.Earphone.EarChargingPort
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="py-2">Công nghệ kết nối:</th>
+                                                    <td class="py-2">
+                                                        @Model.Product.Earphone.EarConnectTech
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        }
+                                    }
+
+                                </div>
+                            </div>
+                            <!-- Pills content -->
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="px-0 border rounded-2 shadow-0">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Sản Phẩm Tương Tự</h5>
+                                    @foreach (var product in Model.newProducts)
+                                    {
+                                        string productImage = product.ProImage.Split("&")[0];
+                                        int price = Convert.ToInt32(product.ProPrice);
+                                        <div class="d-flex mb-3">
+                                            <a asp-action="ProductDetail" asp-controller="Product"
+                                                asp-route-id="@product.ProId" asp-route-proCategory="@product.ProCategory"
+                                                class="me-3">
+                                                <img src="~/Images/Product/@productImage"
+                                                    style="min-width: 96px; height: 96px;" class="img-md img-thumbnail" />
+                                            </a>
+                                            <div class="infoo">
+                                                <a asp-action="Keyboard" asp-controller="Product"
+                                                    asp-route-id="@product.ProId" class="nav-link mb-1">
+                                                    @product.ProName
+                                                </a>
+                                                <strong class="text-dark"> ₫
+                                                    @price.ToString("#,0", CultureInfo.CreateSpecificCulture("vi-VN")) </strong>
+                                            </div>
+                                        </div>
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+</section>
