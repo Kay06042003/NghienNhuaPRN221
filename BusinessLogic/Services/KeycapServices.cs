@@ -1,45 +1,45 @@
-﻿using DataAccess.DAO;
+﻿using BusinessLogic.Interfaces;
 using Models;
-using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repository
+namespace BusinessLogic.Services
 {
-    public class KeycapRepository : IKeycapRepository
+    public class KeycapServices
     {
-        private KeycapDAO keycapDAO;
-        public KeycapRepository(KeycapDAO keycapDAO)
+        private IKeycapServices _keycapServices;
+
+        public KeycapServices(IKeycapServices keycapServices)
         {
-            this.keycapDAO = keycapDAO;
+            _keycapServices = keycapServices;
         }
 
         public async Task Add(Keycap item)
         {
-            await keycapDAO.Add(item);
+            await _keycapServices.Add(item);
         }
 
         public async Task Delete(int id)
         {
-            await keycapDAO.Delete(id);
+            await _keycapServices.Delete(id);
         }
 
         public async Task<Keycap> GetById(int id)
         {
-            return await keycapDAO.GetById(id);
+            return await _keycapServices.GetById(id);
         }
 
         public async Task<IEnumerable<Keycap>> GetListAll()
         {
-            return await keycapDAO.GetListALl();
+            return await _keycapServices.GetListAll();
         }
 
         public async Task Update(Keycap item)
         {
-            await keycapDAO.Update(item);
+            await _keycapServices.Update(item);
         }
     }
 }

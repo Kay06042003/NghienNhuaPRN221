@@ -32,9 +32,9 @@ namespace Repository
             return await earphoneDAO.GetById(id);
         }
 
-        public Task<IEnumerable<Earphone>> GetListAll()
+        public async Task<IEnumerable<Earphone>> GetListAll()
         {
-            return earphoneDAO.GetListALl();
+            return await earphoneDAO.GetListALl();
         }
 
         public async Task Update(Earphone item)

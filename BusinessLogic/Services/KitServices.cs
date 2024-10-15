@@ -1,45 +1,45 @@
-﻿using DataAccess.DAO;
+﻿using BusinessLogic.Interfaces;
 using Models;
-using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repository
+namespace BusinessLogic.Services
 {
-    public class KitRepository : IKitRepository
+    public class KitServices
     {
-        private KitDAO kitDAO;
-        public KitRepository(KitDAO kitDAO)
+        private IKitServices _kitServices;
+
+        public KitServices(IKitServices kitServices)
         {
-            this.kitDAO = kitDAO;
+            _kitServices = kitServices;
         }
 
         public async Task Add(Kit item)
         {
-            await kitDAO.Add(item);
+            await _kitServices.Add(item);
         }
 
         public async Task Delete(int id)
         {
-            await kitDAO.Delete(id);
+            await _kitServices.Delete(id);
         }
 
         public async Task<Kit> GetById(int id)
         {
-            return await kitDAO.GetById(id);
+            return await _kitServices.GetById(id);
         }
 
         public async Task<IEnumerable<Kit>> GetListAll()
         {
-            return await kitDAO.GetListALl();
+            return await _kitServices.GetListAll();
         }
 
         public async Task Update(Kit item)
         {
-            await kitDAO.Update(item);
+            await _kitServices.Update(item);
         }
     }
 }

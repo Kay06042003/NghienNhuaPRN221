@@ -32,9 +32,9 @@ namespace Repository
             return await keyboardDAO.GetById(id);
         }
 
-        public Task<IEnumerable<KeyBoard>> GetListAll()
+        public async Task<IEnumerable<KeyBoard>> GetListAll()
         {
-            return keyboardDAO.GetListALl();
+            return await keyboardDAO.GetListALl();
         }
 
         public async Task Update(KeyBoard item)

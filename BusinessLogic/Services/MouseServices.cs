@@ -1,46 +1,45 @@
-﻿using DataAccess.DAO;
-using Microsoft.EntityFrameworkCore;
+﻿using BusinessLogic.Interfaces;
 using Models;
-using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repository
+namespace BusinessLogic.Services
 {
-    internal class MouseRepository : IMouseRepository
+    public class MouseServices
     {
-        private MouseDAO mouseDAO;
-        public MouseRepository(MouseDAO mouseDAO)
+        private IMouseServices _mouseServices;
+
+        public MouseServices(IMouseServices mouseServices)
         {
-            this.mouseDAO = mouseDAO;
+            _mouseServices = mouseServices;
         }
 
         public async Task Add(Mouse item)
         {
-            await mouseDAO.Add(item);
+            await _mouseServices.Add(item);
         }
 
         public async Task Delete(int id)
         {
-            await mouseDAO.Delete(id);
+            await _mouseServices.Delete(id);
         }
 
         public async Task<Mouse> GetById(int id)
         {
-            return await mouseDAO.GetById(id);
+            return await _mouseServices.GetById(id);
         }
 
         public async Task<IEnumerable<Mouse>> GetListAll()
         {
-            return await mouseDAO.GetListALl();
+            return await _mouseServices.GetListAll();
         }
 
         public async Task Update(Mouse item)
         {
-            await mouseDAO.Update(item);
+            await _mouseServices.Update(item);
         }
     }
 }
