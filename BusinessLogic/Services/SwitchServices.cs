@@ -1,45 +1,45 @@
-﻿using DataAccess.DAO;
+﻿using BusinessLogic.Interfaces;
 using Models;
-using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repository
+namespace BusinessLogic.Services
 {
-    public  class SwitchRepository : ISwitchRepository
+    public class SwitchServices
     {
-        private SwitchDAO switchDAO;
-        public SwitchRepository(SwitchDAO switchDAO)
+        private ISwitchServices _switchServices;
+
+        public SwitchServices(ISwitchServices switchServices)
         {
-            this.switchDAO = switchDAO;
+            _switchServices = switchServices;
         }
 
         public async Task Add(Switch item)
         {
-            await switchDAO.Add(item);
+            await _switchServices.Add(item);
         }
 
         public async Task Delete(int id)
         {
-            await switchDAO.Delete(id);
+            await _switchServices.Delete(id);
         }
 
         public async Task<Switch> GetById(int id)
         {
-            return await switchDAO.GetById(id);
+            return await _switchServices.GetById(id);
         }
 
         public async Task<IEnumerable<Switch>> GetListAll()
         {
-            return await switchDAO.GetListALl();
+            return await _switchServices.GetListAll();
         }
 
         public async Task Update(Switch item)
         {
-            await switchDAO.Update(item);
+            await _switchServices.Update(item);
         }
     }
 }
