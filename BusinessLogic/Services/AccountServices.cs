@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BusinessLogic.Interfaces;
 using Models;
+using Repository.Interfaces;
 
 namespace BusinessLogic.Services
 {
