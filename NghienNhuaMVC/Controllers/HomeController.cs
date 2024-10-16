@@ -1,4 +1,6 @@
+using BusinessLogic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Models;
 using NghienNhuaMVC.Models;
 using System.Diagnostics;
 
@@ -6,16 +8,19 @@ namespace NghienNhuaMVC.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IProductService _productService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IProductService productService)
         {
-            _logger = logger;
+            _productService = productService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            // lay ra 8 san pham moi nhat
+            IEnumerable<Product> products = await _productService.GetAll();
+            products = products.OrderByDescending(p => p.ProId).Take(8).ToList();
+            return View(products);
         }
 
         public IActionResult Privacy()

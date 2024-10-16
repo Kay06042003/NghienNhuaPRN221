@@ -3,6 +3,7 @@
 @using Newtonsoft.Json
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,13 +13,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    @* <link rel="stylesheet" asp-append-version="true" href="~/css/logninCss.css"> *@
+    <link rel="stylesheet" asp-append-version="true" href="~/css/logninCss.css">
     <link rel="stylesheet" asp-append-version="true" href="~/css/productCss.css">
     <link rel="stylesheet" asp-append-version="true" href="~/css/productDetail.css">
     <link rel="stylesheet" asp-append-version="true" href="~/css/site.css" />
     <link rel="stylesheet" asp-append-version="true" href="~/css/style.css">
     <link rel="stylesheet" asp-append-version="true" href="~/css/notificationCss.css">
 </head>
+
 <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-light navContainer">
@@ -31,7 +33,7 @@
                             <span class="navbar-toggler-icon"></span>
 
                         </button>
-                        <a class="navbar-brand" asp-action="Index" asp-controller="Product"><img style="width: 100px;"
+                        <a class="navbar-brand" asp-action="Index" asp-controller="Home"><img style="width: 100px;"
                                 src="~/Images/Logo/z4705695345706_20ca59964f9ad379fcebb44ceaad6cd4-removebg-preview.png"
                                 alt=""></a>
 
@@ -74,7 +76,10 @@
                                             <a class="nav-link" asp-action="Mouse" asp-controller="Product">MOUSE</a>
                                         </li>
                                         <li class="nav-item">
-                                        @* @{
+                                            <a class="nav-link" asp-action="Earphone"
+                                                asp-controller="Product">EARPHONE</a>
+                                        </li>
+                                        @{
                                             String acc = Context.Session.GetString("AccGmail");
                                             if (acc != null)
                                             {
@@ -82,7 +87,8 @@
                                                 if (role == "2" || role == "3")
                                                 {
                                                     <li class="nav-item support">
-                                                        <a class="nav-link" asp-action="Dashboard" asp-controller="Staff">QUẢN LÝ</a>
+                                                        <a class="nav-link" asp-action="Dashboard" asp-controller="Staff">QUẢN
+                                                            LÝ</a>
                                                     </li>
                                                 }
                                                 else
@@ -101,9 +107,6 @@
 
                                             }
                                         }
-
-                                            }
-                                        } *@
                                     </ul>
                                 </div>
                             </div>
@@ -121,11 +124,9 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
 
     <div class="container-fuild backgroundFooter">
         <div class="container-xxl ps-0 py-3">
@@ -150,7 +151,7 @@
                         <div class="describe_content-body">
                             <ul>
                                 <li><a href="/ProductController/Keyboard">Keyboard</a></li>
-                                <li><a href="/ProductController/Kit-ban-phim">Kit bàn phím</a></li>
+                                <li><a href="/ProductController/Kit">Kit</a></li>
                                 <li><a href="/ProductController/Mouse">Mouse</a></li>
                                 <li><a href="/ProductController/Keycap">Keycap</a></li>
                                 <li><a href="/ProductController/Switch">Switch</a></li>
@@ -213,7 +214,7 @@
     <div class="footer">
         <p>Coppyright 2023 &copy; Nghiennghua.vn</p>
     </div>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
@@ -228,72 +229,74 @@
     <script src="~/js/notification.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
     @* <script>
-        var boxSearch = document.getElementById("collapseExample");
-        var txtSearch = document.getElementById("txtSearch");
-        document.addEventListener("click", function (e) {
-            if (e.target !== boxSearch) {
-                boxSearch.classList.remove("show");
-            }
-        })
-        function funcSearch(para) {
-            var txtSearch = para.value;
-            if (txtSearch.length > 3) {
-                $.ajax({
-                    url: "/Product/Search",
-                    type: "get",
-                    data: {
-                        txt: txtSearch
-                    },
-                    success: function (data) {
-                        // Xử lý kết quả tìm kiếm
-                        displaySearchResults(data);
-                        // Hiển thị collapse
-                        boxSearch.classList.add("show");
-                    },
-                    error: function (asfd) {
-                        // Xử lý lỗi nếu có
-                    }
-                });
-            }
+    var boxSearch = document.getElementById("collapseExample");
+    var txtSearch = document.getElementById("txtSearch");
+    document.addEventListener("click", function (e) {
+    if (e.target !== boxSearch) {
+    boxSearch.classList.remove("show");
+    }
+    })
+    function funcSearch(para) {
+    var txtSearch = para.value;
+    if (txtSearch.length > 3) {
+    $.ajax({
+    url: "/Product/Search",
+    type: "get",
+    data: {
+    txt: txtSearch
+    },
+    success: function (data) {
+    // Xử lý kết quả tìm kiếm
+    displaySearchResults(data);
+    // Hiển thị collapse
+    boxSearch.classList.add("show");
+    },
+    error: function (asfd) {
+    // Xử lý lỗi nếu có
+    }
+    });
+    }
 
-        }
+    }
 
-        function displaySearchResults(results) {
-            // Hiển thị kết quả tìm kiếm trong thẻ div có id="content"
-            var contentDiv = document.getElementById("content");
-            contentDiv.innerHTML = ""; // Xóa nội dung cũ trước khi hiển thị kết quả mới
-            var string = "";
-            results.forEach(function (item) {
-                var imgae = item.proImage.split("&");
-                // show all product
-                string += "<a class='text-decoration-none text-dark' href='/Product/ProductDetail/" + item.proId + "?proCategory=" + item.proCategory + "' class='searchBoxProduct-item'>"
-                    + "<div class='row' style='width: 100%; height: auto; font-size: 14px'>"
-                    + "<div class='col-3 p-0'>"
-                    + "<img src='/Images/Product/" + imgae[0] + "' style='width: 100%' alt=''>"
-                    + "</div>"
-                    + "<div class='col-7 p-0'>"
-                    + "<p class='d-block' style='word-wrap: break-word;'>" + item.proName + "</p>"
-                    + "</div>"
-                    + "<div class='col-2 p-0'>"
-                    + "<p style='font-size: 12px'>" + item.proPrice + "đ</p>"
-                    + "</div>"
-                    + "</div>"
-                    + "</a>";
+    function displaySearchResults(results) {
+    // Hiển thị kết quả tìm kiếm trong thẻ div có id="content"
+    var contentDiv = document.getElementById("content");
+    contentDiv.innerHTML = ""; // Xóa nội dung cũ trước khi hiển thị kết quả mới
+    var string = "";
+    results.forEach(function (item) {
+    var imgae = item.proImage.split("&");
+    // show all product
+    string += "<a class='text-decoration-none text-dark' href='/Product/ProductDetail/" + item.proId + "?proCategory=" +
+    item.proCategory + "' class='searchBoxProduct-item'>"
+    + "<div class='row' style='width: 100%; height: auto; font-size: 14px'>"
+    + "<div class='col-3 p-0'>"
+    + "<img src='/Images/Product/" + imgae[0] + "' style='width: 100%' alt=''>"
+    + "</div>"
+    + "<div class='col-7 p-0'>"
+    + "<p class='d-block' style='word-wrap: break-word;'>" + item.proName + "</p>"
+    + "</div>"
+    + "<div class='col-2 p-0'>"
+    + "<p style='font-size: 12px'>" + item.proPrice + "đ</p>"
+    + "</div>"
+    + "</div>"
+    + "</a>";
 
-            });
-            contentDiv.innerHTML = string;
-        }
+    });
+    contentDiv.innerHTML = string;
+    }
     </script> *@
-@* 
+    @*
     @{
-        @using Microsoft.AspNetCore.Http
-        String status = Context.Session.GetString("status");
+    @using Microsoft.AspNetCore.Http
+    String status = Context.Session.GetString("status");
     }
     <script>
-        createToast("@status");
+    createToast("@status");
     </script>
     @{
-        Context.Session.SetString("status", "");
+    Context.Session.SetString("status", "");
     } *@
 </body>
+
 </html>

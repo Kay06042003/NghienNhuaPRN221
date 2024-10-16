@@ -4,6 +4,7 @@ using BusinessLogic.Interfaces;
 using Repository.Interfaces;
 using BusinessLogic.Services;
 using Repository;
+using Microsoft.AspNetCore.Authentication.Cookies;
 namespace NghienNhuaMVC
 {
     public class Program
@@ -15,9 +16,22 @@ namespace NghienNhuaMVC
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            // add session
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
             // add services and repository - Account
             builder.Services.AddScoped<IAccountServices, AccountServices>();
             builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+            builder.Services.AddScoped<AccountDAO>();
+            // add services and repository - Product
+            builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
+            builder.Services.AddScoped<ProductDAO>();
 
             // add razer page
             builder.Services.AddRazorPages();
@@ -35,6 +49,7 @@ namespace NghienNhuaMVC
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
 
             app.UseAuthorization();
 

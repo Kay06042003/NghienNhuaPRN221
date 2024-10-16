@@ -1,0 +1,150 @@
+@model BusinessLogic.ViewModels.KeyboardListViewModel
+@using System.Globalization;
+@{
+    ViewData["Title"] = "Keyboard";
+}
+
+
+<div style="margin-top: 120px">
+
+    <div class="modals js_modal">
+        <div class="filter ">
+            <ul>
+                <li><a href="#">Keyboard</a></li>
+                <li><a href="#">Kit Bàn Phím</a></li>
+                <li><a href="#">Keycap</a></li>
+                <li><a href="#">Switch</a></li>
+                <li><a href="#">Mouse</a></li>
+                <li><a href="#">Earphone</a></li>
+            </ul>
+        </div>
+        <div class="btn_close js_modal_close"><i class="fa-solid fa-xmark"></i></div>
+    </div>
+    <div class="header">
+        <h5 class="home"><a asp-action="Index" asp-controller="Product"
+                style="color: rgba(102,102,102,0.7);font-weight: normal;"> Trang chủ / </a>@Model.Products.First().ProCategory
+        </h5>
+    </div>
+    <div class="nav_bar"> <a href="#" class="js_modals"><i class="fa-solid fa-bars"></i> Lọc</a> </div>
+    <div class="container">
+        <div class="aside-left">
+            <div class="product-list">
+                <ul>
+                    <li><a asp-action="Keyboard">Keyboard</a></li>
+                    <li><a asp-action="Kit">Kit Bàn Phím</a></li>
+                    <li><a asp-action="Keycap">Keycap</a></li>
+                    <li><a asp-action="Switch">Switch</a></li>
+                    <li><a asp-action="Mouse">Mouse</a></li>
+                    <li><a asp-action="Earphone">Earphone</a></li>
+                </ul>
+            </div>
+            <div class="new-product">
+                <span class="new_product_title">Sản phẩm mới</span>
+                <div class="new_product_title_border"></div>
+                <div>
+                    @{
+                        foreach (var item in Model.newProducts)
+                        {
+                            string image = item.ProImage.Split("&")[0];
+                            int discount = Convert.ToInt32(item.ProDiscount);
+                            int price = Convert.ToInt32(item.ProPrice);
+                            int priceBeforeDiscount = price + (price * discount / 100);
+                            <ul class="product_list_widget">
+                                <li>
+                                    <a class="product-title" asp-action="Detail" asp-controller="Product"
+                                        asp-route-id="@item.ProId">
+                                        <img src="~/Images/Product/@image" alt="">
+                                        <span>@item.ProName</span>
+                                    </a>
+                                    <div class="card_body" style="text-align: left;">
+                                        <span>
+                                            <strike class="price_reduce"><i class="fa-solid fa-dong-sign"></i>
+                                                @priceBeforeDiscount.ToString("#,0", CultureInfo.GetCultureInfo("vi-VN"))
+                                            </strike></span>
+                                        <span class="price text fw-bold"><i class="fa-solid fa-dong-sign">
+                                                @price.ToString("#,0", CultureInfo.GetCultureInfo("vi-VN"))
+                                            </i></span>
+                                    </div>
+                                </li>
+                            </ul>
+                        }
+                    }
+                </div>
+            </div>
+            <div class="new_post">
+                <span class="new_post_title">Bài viết mới</span>
+                <div class="new_post_title_border"></div>
+                <div>
+                    <ul class="post_list_widget">
+                        <li><a class="post-title" href="#!">
+                                <img src="https://akko.vn/wp-content/uploads/2021/05/akk-switch-cs-la-gi-280x280.jpg"
+                                    alt="">
+                                <span>Tìm hiểu về Akko switch CS, Akko switch CS là gì?</span>
+                            </a>
+                        </li>
+                        <li><a class="post-title" href="#!">
+                                <img src="https://akko.vn/wp-content/uploads/2020/03/0023-150x150.png" alt="">
+                                <span>Các công nghệ in kí tự keycap bàn phím cơ</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="aside-right">
+            <div class="boxCard">
+                @{
+                    foreach (var item in Model.Products)
+                    {
+                        string image = item.ProImage.Split("&")[0];
+                        int discount = Convert.ToInt32(item.ProDiscount);
+                        int price = Convert.ToInt32(item.ProPrice);
+                        int priceBeforeDiscount = price + (price * discount / 100);
+                        <div class="card_Product">
+                            @if (item.ProDiscount != "0")
+                            {
+                                <div class="discount">
+                                    <div class="on-slace">
+                                        <span>-@item.ProDiscount%</span>
+                                    </div>
+                                </div>
+                            }
+                            <div class="card_top">
+                                <a asp-action="ProductDetail" asp-controller="Product" asp-route-proCategory="@item.ProCategory"
+                                    asp-route-id="@item.ProId">
+                                    <div>
+                                        <img src="~/Images/Product/@image" alt="">
+                                    </div>
+                                    <p class="card_title">@item.ProName</p>
+                                </a>
+                            </div>
+                            <div class="card_body">
+                                @if (item.ProDiscount != "0")
+                                {
+                                    <strike class="price_reduce"><i class="fa-solid fa-dong-sign"></i>
+                                        @priceBeforeDiscount.ToString("#,0", CultureInfo.GetCultureInfo("vi-VN"))
+                                    </strike>
+                                }
+                                <span class="price text fw-bold"><i class="fa-solid fa-dong-sign">
+                                        @price.ToString("#,0", CultureInfo.GetCultureInfo("vi-VN"))
+                                    </i></span>
+                            </div>
+                            <div class="card_bot">
+                                @if (item.ProQuantity != 0)
+                                {
+                                    <p class="card_status" style="color: rgb(0, 128, 0);"><i class="fa-solid fa-check"></i>Còn
+                                        Hàng</p>
+                                }
+                                else
+                                {
+                                    <p class="card_status" style="color:red;"><i class="fa-solid fa-phone"></i>Hết Hàng</p>
+                                }
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
