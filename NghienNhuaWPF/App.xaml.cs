@@ -2,7 +2,9 @@
 using BusinessLogic.Services;
 using DataAccess.DAO;
 using Microsoft.Extensions.DependencyInjection;
+
 using NghienNhuaWPF.View;
+
 using NghienNhuaWPF.ViewModels;
 using Repository;
 using Repository.Interfaces;
@@ -23,7 +25,6 @@ namespace NghienNhuaWPF
             var serviceCollection = new ServiceCollection();
             ConfigureServices(serviceCollection);
             ServiceProvider = serviceCollection.BuildServiceProvider();
-
             var loginView = ServiceProvider.GetRequiredService<LoginView>();
             loginView.Show();
             loginView.IsVisibleChanged += (s, ev) =>
@@ -60,7 +61,9 @@ namespace NghienNhuaWPF
             // Đăng ký MainWindow
             services.AddSingleton<MainView>();
             services.AddSingleton<LoginView>();
+
         }
+
     }
 
 }
