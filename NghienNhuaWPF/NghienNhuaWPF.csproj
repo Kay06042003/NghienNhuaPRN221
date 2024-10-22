@@ -9,13 +9,26 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LiveCharts.Wpf.NetCore3" Version="0.9.8" />
-    <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="5.0.0" />
+    <None Remove="Images\avatar.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FontAwesome.Sharp" Version="6.6.0" />
+    <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="5.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
-    <ProjectReference Include="..\Models\Models.csproj" />
+	  <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
+	  <ProjectReference Include="..\Repository\Repository.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\avatar.png" />
+    <Resource Include="Images\back-image.jpg" />
+    <Resource Include="Images\key-icon.png" />
+    <Resource Include="Images\logo.png" />
+    <Resource Include="Images\user-icon.png" />
   </ItemGroup>
 
 </Project>
