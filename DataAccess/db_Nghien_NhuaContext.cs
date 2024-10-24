@@ -34,7 +34,7 @@ namespace DataAccess
         public virtual DbSet<Switch> Switches { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<View> Views { get; set; }
-        public virtual DbSet<staff> staff { get; set; }
+        public virtual DbSet<Staff> Staffs { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -527,7 +527,7 @@ namespace DataAccess
                 entity.Property(e => e.Date).HasMaxLength(50);
             });
 
-            modelBuilder.Entity<staff>(entity =>
+            modelBuilder.Entity<Staff>(entity =>
             {
                 entity.ToTable("Staff");
 
@@ -583,7 +583,7 @@ namespace DataAccess
 
                 entity.HasOne(d => d.Acc)
                     .WithOne(p => p.staff)
-                    .HasForeignKey<staff>(d => d.AccId)
+                    .HasForeignKey<Staff>(d => d.AccId)
                     .HasConstraintName("FK_Staff_Account");
             });
 
