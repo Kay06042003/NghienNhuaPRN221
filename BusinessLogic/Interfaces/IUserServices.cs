@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repository.Interfaces
+namespace BusinessLogic.Interfaces
 {
-    public interface IUserRepository
+    public interface IUserServices
     {
         Task<User> GetUserByAccId(int id);
     }

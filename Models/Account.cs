@@ -13,6 +13,6 @@ namespace Models
         public string Role { get; set; }
 
         public virtual User User { get; set; }
-        public virtual staff staff { get; set; }
+        public virtual Staff staff { get; set; }
     }
 }
