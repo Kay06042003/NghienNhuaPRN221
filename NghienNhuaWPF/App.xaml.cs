@@ -40,6 +40,13 @@ namespace NghienNhuaWPF
 
         private void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IOrderServices, OrderServices>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddTransient<OrderDAO>();
+            services.AddTransient<OrderConfirmViewModel>();
+            services.AddTransient<OrderUpdateViewModel>();
+            services.AddSingleton<GetListOrderConfirm>();
+            services.AddSingleton<GetListOrderUpdate>();
             // Đăng ký các service, repository, DAO mà bạn đã có sẵn
             services.AddTransient<IAccountServices, AccountServices>();
             services.AddTransient<IUserServices, UserServices>();

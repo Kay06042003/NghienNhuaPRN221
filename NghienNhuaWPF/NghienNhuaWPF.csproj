@@ -9,10 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Images\avatar.png" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="FontAwesome.Sharp" Version="6.6.0" />
     <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="5.0.1" />
   </ItemGroup>
