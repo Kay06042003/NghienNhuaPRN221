@@ -21,11 +21,13 @@ namespace NghienNhuaWPF
     public partial class MainView : Window
     {
         private readonly StaffViewModel _staffViewModel;
-        public MainView(MainViewModel mainViewModel, StaffViewModel staffViewModel)
+        private readonly KeyboardViewModel _keyboardViewModel;
+        public MainView(MainViewModel mainViewModel, StaffViewModel staffViewModel, KeyboardViewModel keyboardViewModel)
         {
             InitializeComponent();
             this.DataContext = mainViewModel;
             _staffViewModel = staffViewModel;
+            _keyboardViewModel = keyboardViewModel;
         }
 
         [DllImport("user32.dll")]
@@ -53,7 +55,7 @@ namespace NghienNhuaWPF
                 this.WindowState = WindowState.Maximized;
             else this.WindowState = WindowState.Normal;
         }
-
+        
         private void StaffView_Click(object sender, RoutedEventArgs e) 
         {
             frMain.Content = new StaffView(_staffViewModel);
@@ -61,6 +63,10 @@ namespace NghienNhuaWPF
         private void HomeView_Click(object sender, RoutedEventArgs e)
         {
             frMain.Content = new HomeView();
+        }
+        private void KeyboardView_Click(object sender, RoutedEventArgs e)
+        {
+            frMain.Content = new KeyboardView(_keyboardViewModel);
         }
     }
 }

@@ -28,6 +28,9 @@ namespace NghienNhuaWPF.ViewModels
         public ICommand DeleteCommand
         { get; }
 
+        public ICommand SelectCommand
+        { get; }
+
         public StaffViewModel(IStaffServices staffService, IAccountServices accountServices)
         {
             Staffs = new ObservableCollection<Staff>();
@@ -38,6 +41,7 @@ namespace NghienNhuaWPF.ViewModels
             UpdateStaffCommand = new RelayCommand(UpdateStaff);
             CancelCommand = new RelayCommand(Cancel);
             DeleteCommand = new RelayCommand(param => DeleteStaff((int)param), null);
+            SelectCommand = new RelayCommand(param => selectStaff((int)param),null);
         }
 
         private string _staffGmail;
@@ -169,24 +173,24 @@ namespace NghienNhuaWPF.ViewModels
             {
                 _selectedStaff = value;
                 OnPropertyChanged(nameof(_selectedStaff));
-                // Cập nhật các textbox nếu selectedUser không null
-                if (_selectedStaff != null)
-                {
-                    staffId = _selectedStaff.StaffId;
-                    staffFullname = _selectedStaff.StaffFullname;
-                    staffSalary = _selectedStaff.StaffSalary;
-                    staffGender = _selectedStaff.StaffGender;
-                    staffDateOfBirth = _selectedStaff.StaffDateOfBirth;
-                    staffPhoneNumber = _selectedStaff.StaffPhoneNumber;
-                    staffAddress = _selectedStaff.StaffAddress;
-                    staffCitizenIdentityNumber = _selectedStaff.StaffCitizenIdentityNumber;
-                    IsItemSelected = true;
-                    staffGmail = "";
-                }
-                else
-                {
-                    IsItemSelected = false;
-                }
+            }
+        }
+
+        private async void selectStaff(int id) 
+        {
+            _selectedStaff = await _staffService.GetByIdStaff(id);
+            if (_selectedStaff != null)
+            {
+                staffId = _selectedStaff.StaffId;
+                staffFullname = _selectedStaff.StaffFullname;
+                staffSalary = _selectedStaff.StaffSalary;
+                staffGender = _selectedStaff.StaffGender;
+                staffDateOfBirth = _selectedStaff.StaffDateOfBirth;
+                staffPhoneNumber = _selectedStaff.StaffPhoneNumber;
+                staffAddress = _selectedStaff.StaffAddress;
+                staffCitizenIdentityNumber = _selectedStaff.StaffCitizenIdentityNumber;
+                IsItemSelected = true;
+                staffGmail = "";
             }
         }
 

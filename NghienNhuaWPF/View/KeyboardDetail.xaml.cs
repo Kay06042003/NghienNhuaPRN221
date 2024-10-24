@@ -10,17 +10,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace NghienNhuaWPF.View
 {
     /// <summary>
-    /// Interaction logic for ProductView.xaml
+    /// Interaction logic for KeyboardDetail.xaml
     /// </summary>
-    public partial class ProductView : Page
+    public partial class KeyboardDetail : Window
     {
-        public ProductView()
+        public KeyboardDetail()
         {
             InitializeComponent();
         }

@@ -31,8 +31,7 @@
                   HeadersVisibility="Column" 
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"
-                  ItemsSource="{Binding Staffs}"
-                  SelectedItem="{Binding selectedStaff, Mode=TwoWay}">
+                  ItemsSource="{Binding Staffs}">
                 <DataGrid.Resources>
                     <!-- Style for the DataGrid itself -->
                     <Style TargetType="DataGrid">
@@ -82,7 +81,9 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel  HorizontalAlignment="Center" Orientation="Horizontal">
-                                    <Button Style="{StaticResource gridEditButton}">
+                                    <Button CommandParameter="{Binding StaffId}"
+                                         Command="{Binding DataContext.SelectCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                            Style="{StaticResource gridEditButton}">
                                         <Icon:PackIconMaterial Kind="PencilOutline" Style="{StaticResource gridButtonIcon}"/>
                                     </Button>
                                     <Button CommandParameter="{Binding StaffId}"
@@ -264,7 +265,6 @@
                     </Button.Style>
                 </Button>
             </StackPanel>
-
         </Grid>
     </Grid>
 </Page>

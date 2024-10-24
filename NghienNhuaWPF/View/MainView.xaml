@@ -131,6 +131,15 @@
                     </StackPanel>
                 </RadioButton>
 
+                <RadioButton Style="{StaticResource menuButton}"
+                    Tag="{StaticResource color9}"
+                    Click="KeyboardView_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <fa:IconImage Icon="Keyboard" Style="{StaticResource menuButtonIcon}"/>
+                        <TextBlock Text="Keyboard" Style="{StaticResource menuButtonText}"/>
+                    </StackPanel>
+                </RadioButton>
+
             </StackPanel>
 
             <Border CornerRadius="0,0,0,10" Grid.Column="1">

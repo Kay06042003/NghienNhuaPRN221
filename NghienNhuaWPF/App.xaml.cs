@@ -11,6 +11,7 @@ using Repository.Interfaces;
 using System.Configuration;
 using System.Data;
 using System.Windows;
+using System.Windows.Input;
 
 namespace NghienNhuaWPF
 {
@@ -44,19 +45,28 @@ namespace NghienNhuaWPF
             services.AddTransient<IAccountServices, AccountServices>();
             services.AddTransient<IUserServices, UserServices>();
             services.AddTransient<IStaffServices, StaffService>();
+            services.AddTransient<IKeyboardServices, KeyboardServices>();
+            services.AddTransient<IProductService, ProductService>();
+
 
 
             services.AddTransient<IAccountRepository, AccountRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IStaffRepository, StaffRepository>();
+            services.AddTransient<IKeyboardRepository, KeyboardRepository>();
+            services.AddTransient<IProductRepository, ProductRepository>();
 
             services.AddTransient<AccountDAO>();
             services.AddTransient<UserDAO>();
             services.AddTransient<StaffDAO>();
+            services.AddTransient<KeyboardDAO>();
+            services.AddTransient<ProductDAO>();
+
 
             services.AddTransient<LoginViewModel>();
             services.AddTransient<MainViewModel>();
             services.AddTransient<StaffViewModel>();
+            services.AddTransient<KeyboardViewModel>();
 
             // Đăng ký MainWindow
             services.AddSingleton<MainView>();
