@@ -17,14 +17,9 @@ namespace BusinessLogic.Services
             _IOrderRepository = orderRepository;        
         }
 
-        public async Task Approve(int id)
+        public Task Approve(int id)
         {
-            await _IOrderRepository.Approve(id);    
-        }
-
-        public async Task<Order> GetById(int id)
-        {
-            return await _IOrderRepository.GetById(id);
+            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<Order>> GetListOrderConfirm()
@@ -32,24 +27,9 @@ namespace BusinessLogic.Services
             return await _IOrderRepository.GetListOrderConfirm();
         }
 
-        public async Task<IEnumerable<OrderDetail>> GetListOrderDetail(int id)
+        public Task Reject(int id)
         {
-            return await _IOrderRepository.GetListOrderDetail(id);
-        }
-
-        public async Task<IEnumerable<Order>> GetListOrderUpdate()
-        {
-            return await _IOrderRepository.GetListOrderUpdate();
-        }
-
-        public async Task Reject(int id)
-        {
-            await _IOrderRepository.Reject(id);
-        }
-
-        public async Task Update(Order item)
-        {
-            await _IOrderRepository.Update(item);
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Interfaces;
 using Models;
+using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,36 +11,36 @@ namespace BusinessLogic.Services
 {
     public class KeyboardServices : IKeyboardServices
     {
-        private IKeyboardServices _keyboardServices;
+        private IKeyboardRepository _keyboardrepository;
 
-        public KeyboardServices(IKeyboardServices keyboardServices)
+        public KeyboardServices(IKeyboardRepository keyboardrepository)
         {
-            _keyboardServices = keyboardServices;
+            _keyboardrepository = keyboardrepository;
         }
 
         public async Task Add(KeyBoard item)
         {
-            await _keyboardServices.Add(item);
+            await _keyboardrepository.Add(item);
         }
 
         public async Task Delete(int id)
         {
-            await _keyboardServices.Delete(id);
+            await _keyboardrepository.Delete(id);
         }
 
         public async Task<KeyBoard> GetById(int id)
         {
-            return await _keyboardServices.GetById(id);
+            return await _keyboardrepository.GetById(id);
         }
 
         public async Task<IEnumerable<KeyBoard>> GetListAll()
         {
-            return await _keyboardServices.GetListAll();
+            return await _keyboardrepository.GetListAll();
         }
 
         public async Task Update(KeyBoard item)
         {
-            await _keyboardServices.Update(item);
+            await _keyboardrepository.Update(item);
         }
     }
 }

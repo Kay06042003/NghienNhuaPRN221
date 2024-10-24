@@ -13,14 +13,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace NghienNhuaWPF.View
+namespace NghienNhuaWPF
 {
     /// <summary>
-    /// Interaction logic for GetListOrderUpdate.xaml
+    /// Interaction logic for GetListOrderConfirm.xaml
     /// </summary>
-    public partial class GetListOrderUpdate : Window
+    public partial class GetListOrderConfirm : Window
     {
-        public GetListOrderUpdate(OrderUpdateViewModel orderViewModel)
+        public GetListOrderConfirm(OrderViewModel orderViewModel)
         {
             InitializeComponent();
             DataContext = orderViewModel;
