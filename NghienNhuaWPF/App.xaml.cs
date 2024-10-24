@@ -2,6 +2,7 @@
 using BusinessLogic.Services;
 using DataAccess.DAO;
 using Microsoft.Extensions.DependencyInjection;
+using NghienNhuaWPF.View;
 using NghienNhuaWPF.ViewModels;
 using Repository;
 using Repository.Interfaces;
@@ -22,17 +23,18 @@ namespace NghienNhuaWPF
             var serviceCollection = new ServiceCollection();
             ConfigureServices(serviceCollection);
             ServiceProvider = serviceCollection.BuildServiceProvider();
-            var mainWindow = ServiceProvider.GetRequiredService<GetListOrderConfirm>();
-            mainWindow.Show();
+            var Window = ServiceProvider.GetRequiredService<GetListOrderConfirm>();
+            Window.Show();
         }
         private void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IOrderServices, OrderServices>();
-            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddTransient<IOrderServices, OrderServices>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<OrderDAO>();
-            services.AddTransient<OrderViewModel>();
-
+            services.AddTransient<OrderConfirmViewModel>();
+            services.AddTransient<OrderUpdateViewModel>();
             services.AddSingleton<GetListOrderConfirm>();
+            services.AddSingleton<GetListOrderUpdate>();
         }
     }
 
