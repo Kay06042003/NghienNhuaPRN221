@@ -10,9 +10,5 @@ namespace BusinessLogic.Interfaces
     public interface IProductService
     {
         Task<IEnumerable<Product>> GetAll();
-        Task<IEnumerable<Product>> GetListAllProduct();
-        Task<Product> GetProductById(int id);
-        Task AddProduct(Product item);
-        Task UpdateProduct(Product item);
     }
 }
