@@ -18,16 +18,36 @@ namespace Repository
             _orderDAO = orderDAO;
         }
 
-        public Task Approve(int id)
+        public async Task Approve(int id)
         {
-            throw new NotImplementedException();
+            await _orderDAO.Approve(id);
+        }
+
+        public async Task<Order> GetById(int id)
+        {
+            return await _orderDAO.GetById(id);
         }
 
         public async Task<IEnumerable<Order>> GetListOrderConfirm() => await _orderDAO.GetListOrderConfirm();
 
-        public Task Reject(int id)
+        public async Task<IEnumerable<OrderDetail>> GetListOrderDetail(int id)
         {
-            throw new NotImplementedException();
+            return await _orderDAO.GetListOrderDetail(id);
+        }
+
+        public async Task<IEnumerable<Order>> GetListOrderUpdate()
+        {
+            return await _orderDAO.GetListOrderUpdate();
+        }
+
+        public async Task Reject(int id)
+        {
+            await _orderDAO.Reject(id);
+        }
+
+        public async Task Update(Order item)
+        {
+            await _orderDAO.Update(item);
         }
     }
 }

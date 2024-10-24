@@ -11,14 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Repository\Re
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogic", "BusinessLogic\BusinessLogic.csproj", "{4E9BEA30-41F9-457E-9B0E-9C6B18559DFB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NghienNhuaMVC", "NghienNhuaMVC\NghienNhuaMVC.csproj", "{B95A488B-10BC-4A69-A972-F0CD9D1B18D7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NghienNhuaMVC", "NghienNhuaMVC\NghienNhuaMVC.csproj", "{B95A488B-10BC-4A69-A972-F0CD9D1B18D7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NghienNhuaWPF", "NghienNhuaWPF\NghienNhuaWPF.csproj", "{66245BC9-2DBE-46CE-B101-602886226BEA}"
-	ProjectSection(ProjectDependencies) = postProject
-		{42D6EE32-9DF5-449F-AAE2-07BA31C77CDC} = {42D6EE32-9DF5-449F-AAE2-07BA31C77CDC}
-		{96360470-FEA4-4679-9A70-2BC5E40F37B3} = {96360470-FEA4-4679-9A70-2BC5E40F37B3}
-		{BA47BEF3-840F-4AFD-AC18-98D072734D6D} = {BA47BEF3-840F-4AFD-AC18-98D072734D6D}
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NghienNhuaWPF", "NghienNhuaWPF\NghienNhuaWPF.csproj", "{130BF12F-5145-4A5C-89E5-631FDC9E20E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,10 +41,10 @@ Global
 		{B95A488B-10BC-4A69-A972-F0CD9D1B18D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B95A488B-10BC-4A69-A972-F0CD9D1B18D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B95A488B-10BC-4A69-A972-F0CD9D1B18D7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{66245BC9-2DBE-46CE-B101-602886226BEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{66245BC9-2DBE-46CE-B101-602886226BEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{66245BC9-2DBE-46CE-B101-602886226BEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{66245BC9-2DBE-46CE-B101-602886226BEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{130BF12F-5145-4A5C-89E5-631FDC9E20E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{130BF12F-5145-4A5C-89E5-631FDC9E20E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{130BF12F-5145-4A5C-89E5-631FDC9E20E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{130BF12F-5145-4A5C-89E5-631FDC9E20E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

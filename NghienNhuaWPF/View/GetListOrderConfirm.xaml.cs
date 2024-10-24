@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NghienNhuaWPF.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,14 +15,12 @@ using System.Windows.Shapes;
 
 namespace NghienNhuaWPF.View
 {
-    /// <summary>
-    /// Interaction logic for KeyboardDetail.xaml
-    /// </summary>
-    public partial class KeyboardDetail : Window
+    public partial class GetListOrderConfirm : Window
     {
-        public KeyboardDetail()
+        public GetListOrderConfirm(OrderConfirmViewModel orderViewModel)
         {
             InitializeComponent();
+            DataContext = orderViewModel;
         }
     }
 }

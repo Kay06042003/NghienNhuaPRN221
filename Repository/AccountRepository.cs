@@ -17,20 +17,19 @@ namespace Repository
         {
             accountDAO = new AccountDAO();
         }
-        
-        public async Task<Account> GetById(int id) => await accountDAO.GetById(id);
-        public async Task Add(Account item) => await accountDAO.Add(item);
-        public async Task Update(Account item) => await accountDAO.Update(item);
-        public async Task Delete(int id) => await accountDAO.Delete(id);
-        public async Task<Account> GetAccountByAccGmail(string accGmail) => await accountDAO.GetAccountByAccGmail(accGmail);
-
-        public Account loginAccount(string username, string password)
+        public Account addAccount(Account account)
         {
-            return accountDAO.loginAccount(username, password);
+            return accountDAO.addAccount(account);
         }
-        public string MD5Hash(string pwd)
+
+        public Account getAccount(int accId)
         {
-            return accountDAO.HashPasswordWithMD5(pwd);
+            return accountDAO.getAccount(accId);
+        }
+
+        public Account updateAccount(Account account)
+        {
+            return accountDAO.updateAccount(account);
         }
     }
 }

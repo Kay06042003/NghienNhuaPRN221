@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Models
 {
-    public partial class Staff
+    public partial class staff
     {
         public int StaffId { get; set; }
         public string StaffSalary { get; set; }
