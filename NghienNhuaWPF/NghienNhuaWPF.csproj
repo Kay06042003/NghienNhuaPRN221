@@ -15,17 +15,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
-	  <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
-	  <ProjectReference Include="..\Repository\Repository.csproj" />
     <ProjectReference Include="..\Models\Models.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Images\avatar.png" />
-    <Resource Include="Images\back-image.jpg" />
-    <Resource Include="Images\key-icon.png" />
-    <Resource Include="Images\logo.png" />
-    <Resource Include="Images\user-icon.png" />
+    <ProjectReference Include="..\Repository\Repository.csproj" />
   </ItemGroup>
 
 </Project>

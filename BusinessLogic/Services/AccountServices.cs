@@ -11,47 +11,19 @@ namespace BusinessLogic.Services
 {
     public class AccountServices : IAccountServices
     {
-        private readonly IAccountRepository _accountRepository;
-
-        public AccountServices(IAccountRepository accountRepository)
+        public Account addAccount(Account account)
         {
-            _accountRepository = accountRepository;
+            throw new NotImplementedException();
         }
 
-        public async Task Add(Account item)
+        public Account getAccount(int accId)
         {
-            await _accountRepository.Add(item);
+            throw new NotImplementedException();
         }
 
-        public async Task Delete(int id)
+        public Account updateAccount(Account account)
         {
-            await _accountRepository.Delete(id);
+            throw new NotImplementedException();
         }
-
-        public async Task<Account> GetAccountByAccGmail(string accGmail)
-        {
-            return await _accountRepository.GetAccountByAccGmail(accGmail);
-        }
-
-        public async Task<Account> GetById(int id)
-        {
-            return await _accountRepository.GetById(id);
-        }
-
-        public Account loginAccount(string username, string password)
-        {
-            return _accountRepository.loginAccount(username, password);
-        }
-
-        public string MD5Hash(string pwd)
-        {
-            return _accountRepository.MD5Hash(pwd);
-        }
-
-        public async Task Update(Account item)
-        {
-             await _accountRepository.Update(item);
-        }
-
     }
 }

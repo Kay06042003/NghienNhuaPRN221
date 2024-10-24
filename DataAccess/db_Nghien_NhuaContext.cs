@@ -34,16 +34,14 @@ namespace DataAccess
         public virtual DbSet<Switch> Switches { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<View> Views { get; set; }
-        public virtual DbSet<Staff> Staffs { get; set; }
+        public virtual DbSet<staff> staff { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-
                 optionsBuilder.UseSqlServer("Data Source=LAPTOP-J9CUM2CG;Initial Catalog=Nghien-nhua;Persist Security Info=True;User ID=sa;Password=123;Trust Server Certificate=True");
-
             }
         }
 
@@ -527,7 +525,7 @@ namespace DataAccess
                 entity.Property(e => e.Date).HasMaxLength(50);
             });
 
-            modelBuilder.Entity<Staff>(entity =>
+            modelBuilder.Entity<staff>(entity =>
             {
                 entity.ToTable("Staff");
 
@@ -583,7 +581,7 @@ namespace DataAccess
 
                 entity.HasOne(d => d.Acc)
                     .WithOne(p => p.staff)
-                    .HasForeignKey<Staff>(d => d.AccId)
+                    .HasForeignKey<staff>(d => d.AccId)
                     .HasConstraintName("FK_Staff_Account");
             });
 
