@@ -12,7 +12,7 @@ namespace DataAccess.DAO
     {
         public async Task<IEnumerable<KeyBoard>> GetListALl()
         {
-            return await _context.KeyBoards.ToListAsync();
+            return await _context.KeyBoards.Include(k => k.Pro).ToListAsync();
         }
 
         public async Task<KeyBoard> GetById(int id)
@@ -23,6 +23,11 @@ namespace DataAccess.DAO
 
         public async Task Add(KeyBoard keyboard)
         {
+            if (keyboard == null)
+                if (keyboard == null)
+                {
+                    throw new Exception("Keyboard not found");
+                }
             _context.KeyBoards.Add(keyboard);
             await _context.SaveChangesAsync();
         }
