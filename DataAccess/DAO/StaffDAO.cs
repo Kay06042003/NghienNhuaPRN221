@@ -22,6 +22,22 @@ namespace DataAccess.DAO
             return item;
         }
 
+        public async Task<Staff> GetByAccId(int id)
+        {
+            var item = await _context.Staffs.FirstOrDefaultAsync(c => c.AccId == id);
+            if (item == null) return null;
+            return item;
+        }
+
+        public async Task<Staff> GetByAccGmail(string accGmail)
+        {
+            var staff = await _context.Staffs
+                .Include(s => s.Acc) // Giả sử bạn có một mối quan hệ với Account
+                .FirstOrDefaultAsync(s => s.Acc.AccGmail == accGmail);
+
+            return staff;
+        }
+
         public async Task Add(Staff item)
         {
             _context.Staffs.Add(item);
@@ -44,6 +60,20 @@ namespace DataAccess.DAO
             if (staff != null)
             {
                 staff.StaffStatus = "Tired";
+                staff.SftaffDayOut =  DateTime.Now;
+                _context.Staffs.Update(staff);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task Recover(int id)
+        {
+            var staff = await GetById(id);
+            if (staff != null)
+            {
+                staff.StaffStatus = "Working";
+                staff.StaffDayJoin = DateTime.Now;
+                staff.SftaffDayOut = null;
                 _context.Staffs.Update(staff);
                 await _context.SaveChangesAsync();
             }

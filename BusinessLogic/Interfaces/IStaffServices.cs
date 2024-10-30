@@ -14,5 +14,9 @@ namespace BusinessLogic.Interfaces
         Task AddStaff(Staff item);
         Task UpdateStaff(Staff item);
         Task DeleteStaff(int id);
+        Task RecoverStaff(int id);
+        Task<Staff> GetByAccId(int id);
+        Task<Staff> GetByAccGmail(string accGmail);
+
     }
 }

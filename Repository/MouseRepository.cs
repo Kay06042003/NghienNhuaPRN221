@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
-    internal class MouseRepository : IMouseRepository
+    public class MouseRepository : IMouseRepository
     {
         private MouseDAO mouseDAO;
         public MouseRepository(MouseDAO mouseDAO)

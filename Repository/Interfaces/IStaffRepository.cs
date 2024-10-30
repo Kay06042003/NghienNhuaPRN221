@@ -14,5 +14,8 @@ namespace Repository.Interfaces
         Task Add(Staff item);
         Task Update(Staff item);
         Task Delete(int id);
+        Task Recover(int id);
+        Task<Staff> GetByAccId(int id);
+        Task<Staff> GetByAccGmail(string accGmail);
     }
 }

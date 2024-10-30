@@ -12,7 +12,7 @@ namespace DataAccess.DAO
     {
         public async Task<IEnumerable<Keycap>> GetListALl()
         {
-            return await _context.Keycaps.ToListAsync();
+            return await _context.Keycaps.Include(k => k.Pro).ToListAsync();
         }
 
         public async Task<Keycap> GetById(int id)

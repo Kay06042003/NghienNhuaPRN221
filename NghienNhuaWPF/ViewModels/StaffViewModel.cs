@@ -1,14 +1,19 @@
 ﻿using BusinessLogic.Interfaces;
+using Microsoft.VisualBasic.Devices;
 using Models;
 using NghienNhuaWPF.Utilities;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace NghienNhuaWPF.ViewModels
@@ -20,6 +25,17 @@ namespace NghienNhuaWPF.ViewModels
 
         public ObservableCollection<Staff> Staffs { get; set; }
 
+        private string _accGmail;
+        public string accGmail
+        {
+            get { return _accGmail; }
+            set
+            {
+                _accGmail = value;
+                OnPropertyChanged(nameof(accGmail));
+            }
+        }
+
         public ICommand AddStaffCommand { get; }
         public ICommand RemoveStaffCommand { get; }
         public ICommand UpdateStaffCommand { get; }
@@ -27,22 +43,39 @@ namespace NghienNhuaWPF.ViewModels
 
         public ICommand DeleteCommand
         { get; }
+        public ICommand RecoverCommand
+        { get; }
 
         public ICommand SelectCommand
         { get; }
+
+        public ICollectionView FilteredStaffs { get; set; }
+        public ICommand ExportCommand { get; set; }
+
 
         public StaffViewModel(IStaffServices staffService, IAccountServices accountServices)
         {
             Staffs = new ObservableCollection<Staff>();
             _accountServices = accountServices;
             _staffService = staffService;
+
+            accGmail = Thread.CurrentPrincipal.Identity.Name;
+            FilteredStaffs = CollectionViewSource.GetDefaultView(Staffs);
+            FilteredStaffs.Filter = FilterKeyboards;
+
             _ = LoadStaffs();
+
+
             AddStaffCommand = new RelayCommand(AddStaff);
             UpdateStaffCommand = new RelayCommand(UpdateStaff);
             CancelCommand = new RelayCommand(Cancel);
             DeleteCommand = new RelayCommand(param => DeleteStaff((int)param), null);
+            RecoverCommand = new RelayCommand(param => RecoverStaff((int)param), null);
             SelectCommand = new RelayCommand(param => selectStaff((int)param),null);
+            ExportCommand = new RelayCommand(ExportToExcel);
         }
+
+        
 
         private string _staffGmail;
         public string staffGmail
@@ -176,6 +209,39 @@ namespace NghienNhuaWPF.ViewModels
             }
         }
 
+        private string _searchText;
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                _searchText = value;
+                OnPropertyChanged(nameof(SearchText));
+                ApplyFilter();
+            }
+        }
+
+        private bool FilterKeyboards(object item)
+        {
+            if (item is Staff staff)
+            {
+                // Điều chỉnh bộ lọc để tìm kiếm theo các trường bạn cần
+                return string.IsNullOrEmpty(SearchText) ||
+                       staff.StaffFullname.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                       staff.StaffGender.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                       staff.StaffSalary.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                       staff.StaffPhoneNumber.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                       staff.StaffAddress.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                       staff.StaffStatus.Contains(SearchText, StringComparison.OrdinalIgnoreCase);
+            }
+            return false;
+        }
+
+        private void ApplyFilter()
+        {
+            FilteredStaffs.Refresh();
+        }
+
         private async void selectStaff(int id) 
         {
             _selectedStaff = await _staffService.GetByIdStaff(id);
@@ -207,7 +273,7 @@ namespace NghienNhuaWPF.ViewModels
         private void Cancel(object parameter)
         {
             selectedStaff = null;
-            ResetStaffData(); // Optional: Resets all input fields if required
+            ResetStaffData();
         }
 
         private async void AddStaff(object parameter)
@@ -309,26 +375,72 @@ namespace NghienNhuaWPF.ViewModels
         }
 
         public async void DeleteStaff(int id)
-        {
-            if (MessageBox.Show("Confirm delete of this record?", "Student", MessageBoxButton.YesNo)
-                == MessageBoxResult.Yes)
+        {   
+            var currentStaff = await _staffService.GetByAccGmail(accGmail);
+              
+            var staff = await _staffService.GetByIdStaff(id);
+            if (currentStaff.StaffId == staff.StaffId) 
             {
-                try
+                MessageBox.Show("Bạn không thể xóa tài khoản của bạn");
+                return;
+            }
+                if (staff.StaffStatus == "Working")
+            {
+                if (MessageBox.Show("Bạn chắc chắn muốn xóa nhân viên này?", "Student", MessageBoxButton.YesNo)
+                    == MessageBoxResult.Yes)
                 {
-                    
-                    await _staffService.DeleteStaff(id);
-                    ResetStaffData();
-                    MessageBox.Show("Record successfully deleted.");
+                    try
+                    {
+                        await _staffService.DeleteStaff(id);
+                        ResetStaffData();
+                        MessageBox.Show("Xóa nhân viên thành công.");
+                    }
+                    catch (Exception ex)
+                    {
+                        ResetStaffData();
+                        MessageBox.Show("Error occured while saving. " + ex.InnerException);
+                    }
+                    finally
+                    {
+                        await LoadStaffs();
+                    }
                 }
-                catch (Exception ex)
+            }
+            else 
+            {
+                MessageBox.Show("Nhân viên này đã nghỉ việc");
+            }
+        }
+
+        public async void RecoverStaff(int id)
+        {
+            var staff = await _staffService.GetByIdStaff(id);
+            if (staff.StaffStatus == "Tired")
+            {
+                if (MessageBox.Show("Bạn có muốn khôi phục tài khoản?", "Staff", MessageBoxButton.YesNo)
+                    == MessageBoxResult.Yes)
                 {
-                    ResetStaffData();
-                    MessageBox.Show("Error occured while saving. " + ex.InnerException);
+                    try
+                    {
+
+                        await _staffService.RecoverStaff(id);
+                        ResetStaffData();
+                        MessageBox.Show("Khôi phục tài khoản thành  công.");
+                    }
+                    catch (Exception ex)
+                    {
+                        ResetStaffData();
+                        MessageBox.Show("Error occured while saving. " + ex.InnerException);
+                    }
+                    finally
+                    {
+                        await LoadStaffs();
+                    }
                 }
-                finally
-                {
-                    await LoadStaffs();
-                }
+            }
+            else
+            {
+                MessageBox.Show("Nhân viên này vẫn đang làm việc");
             }
         }
 
@@ -354,6 +466,59 @@ namespace NghienNhuaWPF.ViewModels
         private void ShowErrorMessage(string message)
         {
             MessageBox.Show(message);
+        }
+
+        private void ExportToExcel(object obj)
+        {
+            OfficeOpenXml.ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+            string excelFolder = @"C:\Users\thinh\Documents\GitHub\NghienNhuaPRN221\NghienNhuaWPF\Excels";
+
+            if (!Directory.Exists(excelFolder))
+            {
+                Directory.CreateDirectory(excelFolder);
+            }
+
+            string filePath = Path.Combine(excelFolder, "StaffsData.xlsx");
+
+            try
+            {
+                using (ExcelPackage package = new ExcelPackage())
+                {
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Staff");
+
+                    string[] headers = { "ID", "Full  Name", "Gender", "Phone Number", "Address", "Citizen Identity Number", "Date Of Birth", "Salary", "Day Join", "Day Out", "Status"};
+                    for (int i = 0; i < headers.Length; i++)
+                    {
+                        worksheet.Cells[1, i + 1].Value = headers[i];
+                    }
+
+                    int rowIndex = 2;
+                    foreach (var staff in Staffs)
+                    {
+                        worksheet.Cells[rowIndex, 1].Value = staff.StaffId;
+                        worksheet.Cells[rowIndex, 2].Value = staff.StaffFullname;
+                        worksheet.Cells[rowIndex, 3].Value = staff.StaffGender;
+                        worksheet.Cells[rowIndex, 4].Value = staff.StaffPhoneNumber;
+                        worksheet.Cells[rowIndex, 5].Value = staff.StaffAddress;
+                        worksheet.Cells[rowIndex, 6].Value = staff.StaffCitizenIdentityNumber;
+                        worksheet.Cells[rowIndex, 7].Value = staff.StaffDateOfBirth.ToString();
+                        worksheet.Cells[rowIndex, 8].Value = staff.StaffSalary; 
+                        worksheet.Cells[rowIndex, 9].Value = staff.StaffDayJoin.ToString();
+                        worksheet.Cells[rowIndex, 10].Value = staff.SftaffDayOut.ToString();
+                        worksheet.Cells[rowIndex, 11].Value = staff.StaffStatus;
+
+                        rowIndex++;
+                    }
+
+                    package.SaveAs(new FileInfo(filePath));
+                }
+
+                MessageBox.Show($"Dữ liệu đã được xuất ra file Excel tại: {filePath}");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi xuất Excel: {ex.Message}");
+            }
         }
     }
 }

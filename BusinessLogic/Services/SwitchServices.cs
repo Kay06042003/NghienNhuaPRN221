@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Interfaces;
 using Models;
+using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,38 +9,38 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Services
 {
-    public class SwitchServices
+    public class SwitchServices : ISwitchServices
     {
-        private ISwitchServices _switchServices;
+        private ISwitchRepository _switchRepository;
 
-        public SwitchServices(ISwitchServices switchServices)
+        public SwitchServices(ISwitchRepository switchRepository)
         {
-            _switchServices = switchServices;
+            _switchRepository = switchRepository;
         }
 
         public async Task Add(Switch item)
         {
-            await _switchServices.Add(item);
+            await _switchRepository.Add(item);
         }
 
         public async Task Delete(int id)
         {
-            await _switchServices.Delete(id);
+            await _switchRepository.Delete(id);
         }
 
         public async Task<Switch> GetById(int id)
         {
-            return await _switchServices.GetById(id);
+            return await _switchRepository.GetById(id);
         }
 
         public async Task<IEnumerable<Switch>> GetListAll()
         {
-            return await _switchServices.GetListAll();
+            return await _switchRepository.GetListAll();
         }
 
         public async Task Update(Switch item)
         {
-            await _switchServices.Update(item);
+            await _switchRepository.Update(item);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NghienNhuaWPF.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,10 @@ namespace NghienNhuaWPF.View
     /// </summary>
     public partial class HomeView : Page
     {
-        public HomeView()
+        public HomeView(HomeViewModel homeViewModel)
         {
             InitializeComponent();
+            DataContext = homeViewModel;
         }
     }
 }

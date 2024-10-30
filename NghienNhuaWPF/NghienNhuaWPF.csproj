@@ -13,7 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="EPPlus" Version="7.4.1" />
     <PackageReference Include="FontAwesome.Sharp" Version="6.6.0" />
+    <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
     <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="5.0.1" />
   </ItemGroup>
 
@@ -30,6 +32,10 @@
     <Resource Include="Images\key-icon.png" />
     <Resource Include="Images\logo.png" />
     <Resource Include="Images\user-icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Excels\" />
   </ItemGroup>
 
 </Project>

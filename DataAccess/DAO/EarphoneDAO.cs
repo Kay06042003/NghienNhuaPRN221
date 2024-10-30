@@ -12,7 +12,7 @@ namespace DataAccess.DAO
     {
          public async Task<IEnumerable<Earphone>> GetListALl()
         {
-            return await _context.Earphones.ToListAsync();
+            return await _context.Earphones.Include(e => e.Pro).ToListAsync();
         }
 
         public async Task<Earphone> GetById(int id)

@@ -1,15 +1,7 @@
 ﻿using BusinessLogic.Interfaces;
-using Microsoft.Win32;
 using Models;
 using NghienNhuaWPF.Utilities;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -22,6 +14,7 @@ namespace NghienNhuaWPF.ViewModels
 
         public ICommand AddKeyboardCommand { get; }
         public ICommand SelectImagesCommand { get; }
+        public ICommand BackToListCommand { get; }
 
         private List<string> selectedImageFiles = new List<string>();
 
@@ -32,6 +25,7 @@ namespace NghienNhuaWPF.ViewModels
 
             SelectImagesCommand = new RelayCommand(SelectImages);
             AddKeyboardCommand = new RelayCommand(AddKeyboard);
+            BackToListCommand = new RelayCommand(BackToList);
         }
 
         private string _proName;
@@ -210,10 +204,8 @@ namespace NghienNhuaWPF.ViewModels
             }
         }
 
-        // Lệnh cho phép người dùng chọn ảnh
         private void SelectImages(object obj)
         {
-            // Mở hộp thoại chọn file
             var openFileDialog = new Microsoft.Win32.OpenFileDialog
             {
                 Multiselect = true,
@@ -223,31 +215,27 @@ namespace NghienNhuaWPF.ViewModels
             bool? result = openFileDialog.ShowDialog();
             if (result == true)
             {
-                // Lưu các file ảnh đã chọn vào danh sách tạm thời
                 selectedImageFiles = openFileDialog.FileNames.ToList();
-
-                // Hiển thị tên ảnh trong TextBox
                 ProImage = string.Join("&", selectedImageFiles.Select(Path.GetFileName));
             }
         }
 
         private async void AddKeyboard(object obj)
         {
-            // Kiểm tra tính hợp lệ của input
             if (!ValidateInput())
             {
                 return;
             }
+            bool imagesProcessed = true;
 
             try
             {
-                // Lưu ảnh vào thư mục Images nếu đã chọn ảnh
                 if (selectedImageFiles != null && selectedImageFiles.Count > 0)
                 {
-                    var savedImages = SaveImagesToFolder(selectedImageFiles);
+                    var savedImages = SaveImagesToFolder(selectedImageFiles, ref imagesProcessed);
                     if (savedImages != null && savedImages.Count > 0)
                     {
-                        ProImage = string.Join("&", savedImages); // Lưu lại tên ảnh đã được lưu vào cơ sở dữ liệu
+                        ProImage = string.Join("&", savedImages);
                     }
                 }
                 else
@@ -255,14 +243,17 @@ namespace NghienNhuaWPF.ViewModels
                     MessageBox.Show("Bạn chưa chọn ảnh nào. Vui lòng chọn ít nhất một ảnh.");
                     return;
                 }
-
-                // Tạo Product và Keyboard như trước
+                if (!imagesProcessed)
+                {
+                    MessageBox.Show("Thêm bị hủy do không ghi đè ảnh.");
+                    return;
+                }
                 var product = new Product
                 {
                     ProName = this.ProName,
                     ProQuantity = this.ProQuantity,
                     ProPrice = this.ProPrice,
-                    ProImage = this.ProImage, // Đã chứa tên của các ảnh
+                    ProImage = this.ProImage,
                     ProDescription = this.ProDescription,
                     ProDiscount = this.ProDiscount,
                     ProDate = DateTime.Now,
@@ -295,8 +286,7 @@ namespace NghienNhuaWPF.ViewModels
             }
         }
 
-        // Lưu ảnh vào thư mục Images
-        private List<string> SaveImagesToFolder(List<string> imageFiles)
+        private List<string> SaveImagesToFolder(List<string> imageFiles, ref bool imagesProcessed)
         {
             List<string> savedImages = new List<string>();
             string projectRoot = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.Parent.FullName;
@@ -310,23 +300,44 @@ namespace NghienNhuaWPF.ViewModels
             foreach (string file in imageFiles)
             {
                 string destFileName = Path.Combine(folderPath, Path.GetFileName(file));
-                File.Copy(file, destFileName, true);
-                savedImages.Add(Path.GetFileName(file));
+
+                if (File.Exists(destFileName))
+                {
+                    var result = MessageBox.Show($"Ảnh '{Path.GetFileName(file)}' đã tồn tại. Bạn có muốn ghi đè không?",
+                                                   "Thông báo",
+                                                   MessageBoxButton.YesNo,
+                                                   MessageBoxImage.Warning);
+
+                    if (result == MessageBoxResult.No)
+                    {
+                        imagesProcessed = false;
+                        continue;
+                    }
+                }
+                if (imagesProcessed)
+                {
+                    File.Copy(file, destFileName, true);
+                    savedImages.Add(Path.GetFileName(file));
+                }
             }
 
             return savedImages;
         }
         private void CloseWindow()
         {
-            // Tìm cửa sổ cha của ViewModel và đóng nó
             var window = Application.Current.Windows.OfType<Window>()
                          .FirstOrDefault(w => w.DataContext == this);
             window?.Close();
         }
 
+        private void BackToList(object obj)
+        {
+            var window = Application.Current.Windows.OfType<Window>()
+                         .FirstOrDefault(w => w.DataContext == this);
+            window?.Close();
+        }
         private bool ValidateInput()
         {
-            // Kiểm tra tính hợp lệ của các thuộc tính
             if (string.IsNullOrWhiteSpace(ProName) ||
                 string.IsNullOrWhiteSpace(ProImage) ||
                 string.IsNullOrWhiteSpace(ProPrice) ||
@@ -351,13 +362,11 @@ namespace NghienNhuaWPF.ViewModels
             if (int.Parse(ProPrice) < 0)
             {
                 MessageBox.Show("Price cannot be less than zero");
-
                 return false;
             }
             if (ProQuantity < 0)
             {
                 MessageBox.Show("Quantity must not be less than zero");
-
                 return false;
             }
             return true;

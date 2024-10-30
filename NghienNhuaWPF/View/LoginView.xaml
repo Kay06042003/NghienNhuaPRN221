@@ -4,10 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NghienNhuaWPF.View"
-        xmlns:vm ="clr-namespace:NghienNhuaWPF.ViewModels"
-        xmlns:usercontroll ="clr-namespace:NghienNhuaWPF.UserControll"
+        xmlns:vm="clr-namespace:NghienNhuaWPF.ViewModels"
+        xmlns:usercontroll="clr-namespace:NghienNhuaWPF.UserControll"
         mc:Ignorable="d"
-        Title="LoginView" Height="550" Width="800"
+        Title="LoginView"
+        Height="550"
+        Width="800"
         WindowStyle="None"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
@@ -20,7 +22,9 @@
     </Window.Resources>
 
     <Window.Visibility>
-        <Binding Path="isViewVisible" Mode="TwoWay" Converter="{StaticResource BooleanToVisibility}"/>
+        <Binding Path="isViewVisible"
+                 Mode="TwoWay"
+                 Converter="{StaticResource BooleanToVisibility}"/>
     </Window.Visibility>
 
     <Border CornerRadius="12">
@@ -29,21 +33,28 @@
                         Stretch="None"/>
         </Border.Background>
 
-        <Border CornerRadius="10"                    
-            BorderThickness="2"
-            Opacity="0.95">
+        <Border CornerRadius="10"
+                BorderThickness="2"
+                Opacity="0.95">
             <Border.BorderBrush>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                    <GradientStop Color="{StaticResource winBorderColor1}" Offset="0"/>
-                    <GradientStop Color="{StaticResource winBorderColor2}" Offset="0.75"/>
-                    <GradientStop Color="{StaticResource winBorderColor3}" Offset="1"/>
+                <LinearGradientBrush StartPoint="0,0"
+                                     EndPoint="1,1">
+                    <GradientStop Color="{StaticResource winBorderColor1}"
+                                  Offset="0"/>
+                    <GradientStop Color="{StaticResource winBorderColor2}"
+                                  Offset="0.75"/>
+                    <GradientStop Color="{StaticResource winBorderColor3}"
+                                  Offset="1"/>
                 </LinearGradientBrush>
             </Border.BorderBrush>
 
             <Border.Background>
-                <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
-                    <GradientStop Color="{StaticResource primaryBackColor1}" Offset="0"/>
-                    <GradientStop Color="{StaticResource primaryBackColor2}" Offset="1"/>
+                <LinearGradientBrush StartPoint="0,1"
+                                     EndPoint="1,0">
+                    <GradientStop Color="{StaticResource primaryBackColor1}"
+                                  Offset="0"/>
+                    <GradientStop Color="{StaticResource primaryBackColor2}"
+                                  Offset="1"/>
                 </LinearGradientBrush>
             </Border.Background>
 
@@ -68,7 +79,7 @@
                                VerticalAlignment="Center"
                                Margin="10,0,0,0"/>
 
-                    <Button x:Name="btnMinimize"                           
+                    <Button x:Name="btnMinimize"
                             BorderThickness="0"
                             Content="-"
                             Foreground="White"
@@ -80,10 +91,13 @@
 
                         <Button.Style>
                             <Style TargetType="Button">
-                                <Setter Property="Background" Value="#28AEED"/>
+                                <Setter Property="Background"
+                                        Value="#28AEED"/>
                                 <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#278BEF"/>
+                                    <Trigger Property="IsMouseOver"
+                                             Value="True">
+                                        <Setter Property="Background"
+                                                Value="#278BEF"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -91,7 +105,8 @@
 
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
-                                <Border Width="18" Height="18"
+                                <Border Width="18"
+                                        Height="18"
                                         CornerRadius="9"
                                         Background="{TemplateBinding Background}">
                                     <ContentPresenter VerticalAlignment="Center"
@@ -102,7 +117,7 @@
 
                     </Button>
 
-                    <Button x:Name="btnClose"                          
+                    <Button x:Name="btnClose"
                             BorderThickness="0"
                             Content="X"
                             Foreground="White"
@@ -114,10 +129,13 @@
 
                         <Button.Style>
                             <Style TargetType="Button">
-                                <Setter Property="Background" Value="#DA34AE"/>
+                                <Setter Property="Background"
+                                        Value="#DA34AE"/>
                                 <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#C62DAE"/>
+                                    <Trigger Property="IsMouseOver"
+                                             Value="True">
+                                        <Setter Property="Background"
+                                                Value="#C62DAE"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -125,7 +143,8 @@
 
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
-                                <Border Width="18" Height="18"
+                                <Border Width="18"
+                                        Height="18"
                                         CornerRadius="9"
                                         Background="{TemplateBinding Background}">
                                     <ContentPresenter VerticalAlignment="Center"
@@ -142,9 +161,10 @@
                             Margin="0,35,0,0">
 
                     <Image Source="/Images/Logo.png"
-                           Width="100" Height="100"/>
+                           Width="100"
+                           Height="100"/>
 
-                    <TextBlock Text="RJ CODE"
+                    <TextBlock Text="Nghien Nhua"
                                Foreground="White"
                                FontSize="25"
                                FontWeight="Medium"
@@ -164,14 +184,14 @@
                                Foreground="DarkGray"
                                FontSize="12"
                                FontWeight="Medium"
-                               FontFamily="Montserrat"                             
+                               FontFamily="Montserrat"
                                Margin="0,35,0,0"/>
 
                     <TextBox x:Name="txtUser"
                              Text="{Binding accGmail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              FontSize="13"
                              FontWeight="Medium"
-                             FontFamily="Montserrat"                            
+                             FontFamily="Montserrat"
                              Foreground="White"
                              CaretBrush="LightGray"
                              BorderBrush="DarkGray"
@@ -192,38 +212,41 @@
                                Foreground="DarkGray"
                                FontSize="12"
                                FontWeight="Medium"
-                               FontFamily="Montserrat"                             
+                               FontFamily="Montserrat"
                                Margin="0,15,0,0"/>
 
                     <usercontroll:BindablePassword Password="{Binding passWord, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    Height="28"                            
-                                    Margin="0,5,0,0">
+                                                   Height="28"
+                                                   Margin="0,5,0,0">
                     </usercontroll:BindablePassword>
 
                     <TextBlock Text="{Binding errorMessage}"
-                                Foreground="#D7596D"
-                                FontSize="12"
-                                FontWeight="Medium"
-                                FontFamily="Montserrat"                             
-                                Margin="0,10,0,0"
-                                TextWrapping="Wrap"/>
+                               Foreground="#D7596D"
+                               FontSize="12"
+                               FontWeight="Medium"
+                               FontFamily="Montserrat"
+                               Margin="0,10,0,0"
+                               TextWrapping="Wrap"/>
 
-                    <Button x:Name="btnLogin"  
+                    <Button x:Name="btnLogin"
                             Command="{Binding LoginCommand}"
                             BorderThickness="0"
                             Content="LOG IN"
                             Foreground="White"
                             FontSize="12"
                             FontFamily="Montserrat"
-                            Cursor="Hand"                           
+                            Cursor="Hand"
                             Margin="0,50,0,0">
 
                         <Button.Style>
                             <Style TargetType="Button">
-                                <Setter Property="Background" Value="#462AD8"/>
+                                <Setter Property="Background"
+                                        Value="#462AD8"/>
                                 <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#28AEED"/>
+                                    <Trigger Property="IsMouseOver"
+                                             Value="True">
+                                        <Setter Property="Background"
+                                                Value="#28AEED"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -231,7 +254,8 @@
 
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
-                                <Border Width="150" Height="40"
+                                <Border Width="150"
+                                        Height="40"
                                         CornerRadius="20"
                                         Background="{TemplateBinding Background}">
                                     <ContentPresenter VerticalAlignment="Center"
@@ -247,18 +271,18 @@
                                 Margin="0,15,0,0">
 
                         <TextBlock Text="Forgot Password?"
-                               Foreground="DarkGray"
-                               FontSize="12"
-                               FontWeight="Medium"
-                               FontFamily="Montserrat"/>
+                                   Foreground="DarkGray"
+                                   FontSize="12"
+                                   FontWeight="Medium"
+                                   FontFamily="Montserrat"/>
 
                         <TextBlock Text="Reset"
-                               Foreground="White"
-                               FontSize="12"
-                               FontWeight="Medium"
-                               FontFamily="Montserrat"
-                               Cursor="Hand"
-                               Margin="8,0,0,0"/>
+                                   Foreground="White"
+                                   FontSize="12"
+                                   FontWeight="Medium"
+                                   FontFamily="Montserrat"
+                                   Cursor="Hand"
+                                   Margin="8,0,0,0"/>
 
                     </StackPanel>
                 </StackPanel>

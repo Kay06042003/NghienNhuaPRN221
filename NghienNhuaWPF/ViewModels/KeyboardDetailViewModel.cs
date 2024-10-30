@@ -1,11 +1,7 @@
 ﻿using BusinessLogic.Interfaces;
 using Models;
 using NghienNhuaWPF.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows;
 using System.Windows.Input;
 
@@ -16,10 +12,13 @@ namespace NghienNhuaWPF.ViewModels
         public KeyBoard SelectedKeyboard { get; set; }
 
         public ICommand UpdateCommand { get; }
-        public ICommand DeleteCommand { get;}
-        public ICommand CancelCommand { get;  }
+        public ICommand DeleteCommand { get; }
+        public ICommand CancelCommand { get; }
 
         private readonly IKeyboardServices _keyboardServices;
+        public ICommand SelectImagesCommand { get; }
+
+        private List<string> selectedImageFiles = new List<string>();
 
         public KeyboardDetailViewModel(KeyBoard keyboard, IKeyboardServices keyboardServices)
         {
@@ -28,34 +27,104 @@ namespace NghienNhuaWPF.ViewModels
 
             UpdateCommand = new RelayCommand(ExecuteUpdateCommand);
             DeleteCommand = new RelayCommand(ExecuteDeleteCommand);
-
+            CancelCommand = new RelayCommand(Cancle);
+            SelectImagesCommand = new RelayCommand(SelectImages);
         }
+        private void SelectImages(object obj)
+        {
+            var openFileDialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Multiselect = true,
+                Filter = "Image files (*.jpg, *.jpeg, *.png) | *.jpg; *.jpeg; *.png"
+            };
+
+            bool? result = openFileDialog.ShowDialog();
+            if (result == true)
+            {
+                selectedImageFiles = openFileDialog.FileNames.ToList();
+                SelectedKeyboard.Pro.ProImage = string.Join("&", selectedImageFiles.Select(Path.GetFileName));
+            }
+        }
+
+        private List<string> SaveImagesToFolder(List<string> imageFiles, ref bool imagesProcessed)
+        {
+            List<string> savedImages = new List<string>();
+            string projectRoot = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.Parent.FullName;
+            string folderPath = Path.Combine(projectRoot, "Images");
+
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            foreach (string file in imageFiles)
+            {
+                string destFileName = Path.Combine(folderPath, Path.GetFileName(file));
+
+                if (File.Exists(destFileName))
+                {
+                    var result = MessageBox.Show($"Ảnh '{Path.GetFileName(file)}' đã tồn tại. Bạn có muốn ghi đè không?",
+                                                   "Thông báo",
+                                                   MessageBoxButton.YesNo,
+                                                   MessageBoxImage.Warning);
+
+                    if (result == MessageBoxResult.No)
+                    {
+                        imagesProcessed = false;
+                        continue; 
+                    }
+                }
+                if (imagesProcessed)
+                {
+                    File.Copy(file, destFileName, true);
+                    savedImages.Add(Path.GetFileName(file));
+                }
+            }
+
+            return savedImages;
+        }
+
         private async void ExecuteUpdateCommand(object parameter)
         {
             if (ValidateInput())
             {
-                await _keyboardServices.Update(SelectedKeyboard);
-                MessageBox.Show("Cập nhật thành công!");
+                bool imagesProcessed = true;
+
+                if (selectedImageFiles != null && selectedImageFiles.Count > 0)
+                {
+                    var savedImages = SaveImagesToFolder(selectedImageFiles, ref imagesProcessed);
+                    if (savedImages != null && savedImages.Count > 0)
+                    {
+                        SelectedKeyboard.Pro.ProImage = string.Join("&", savedImages);
+                    }
+                }
+
+                if (imagesProcessed)
+                {
+                    await _keyboardServices.Update(SelectedKeyboard);
+                    MessageBox.Show("Cập nhật thành công!");
+                }
+                else
+                {
+                    MessageBox.Show("Cập nhật bị hủy do không ghi đè ảnh.");
+                }
             }
             else
             {
                 MessageBox.Show("Vui lòng kiểm tra lại các thông tin đã nhập.");
             }
         }
-
         private async void ExecuteDeleteCommand(object parameter)
         {
             if (SelectedKeyboard != null)
             {
-                // Hiển thị hộp thoại xác nhận
                 var result = MessageBox.Show("Bạn có chắc chắn muốn xóa sản phẩm này?", "Xác nhận xóa",
                     MessageBoxButton.YesNo, MessageBoxImage.Question);
 
-                // Nếu người dùng chọn "Yes", thực hiện xóa
                 if (result == MessageBoxResult.Yes)
                 {
-                    SelectedKeyboard.Pro.ProQuantity = 0; // Đặt số lượng thành 0
-                    await _keyboardServices.Update(SelectedKeyboard); // Sử dụng hàm update để lưu thay đổi
+                    SelectedKeyboard.Pro.ProQuantity = 0;
+                    await _keyboardServices.Update(SelectedKeyboard);
                     MessageBox.Show("Đã xóa thành công!");
                     CloseWindow();
                 }
@@ -68,7 +137,13 @@ namespace NghienNhuaWPF.ViewModels
 
         private void CloseWindow()
         {
-            // Tìm cửa sổ cha của ViewModel và đóng nó
+            var window = Application.Current.Windows.OfType<Window>()
+                         .FirstOrDefault(w => w.DataContext == this);
+            window?.Close();
+        }
+
+        private void Cancle(object obj)
+        {
             var window = Application.Current.Windows.OfType<Window>()
                          .FirstOrDefault(w => w.DataContext == this);
             window?.Close();
@@ -76,12 +151,10 @@ namespace NghienNhuaWPF.ViewModels
 
         private bool ValidateInput()
         {
-            // Kiểm tra tính hợp lệ của các thuộc tính
-            if (string.IsNullOrWhiteSpace(SelectedKeyboard.Pro.ProName)||
+            if (string.IsNullOrWhiteSpace(SelectedKeyboard.Pro.ProName) ||
                 string.IsNullOrWhiteSpace(SelectedKeyboard.Pro.ProImage) ||
                 string.IsNullOrWhiteSpace(SelectedKeyboard.Pro.ProPrice) ||
                 string.IsNullOrWhiteSpace(SelectedKeyboard.Pro.ProDescription) ||
-                string.IsNullOrWhiteSpace(SelectedKeyboard.Pro.ProCategory) ||
                 string.IsNullOrWhiteSpace(SelectedKeyboard.Pro.ProBrand) ||
                 string.IsNullOrWhiteSpace(SelectedKeyboard.Pro.ProOrigin) ||
                 string.IsNullOrWhiteSpace(SelectedKeyboard.KbLed) ||
@@ -91,22 +164,26 @@ namespace NghienNhuaWPF.ViewModels
                 string.IsNullOrWhiteSpace(SelectedKeyboard.KbPlate) ||
                 string.IsNullOrWhiteSpace(SelectedKeyboard.KbKeycap))
             {
-                return false; 
+                MessageBox.Show("Please fill all the fields");
+
+                return false;
             }
-            if(int.Parse(SelectedKeyboard.Pro.ProDiscount) < 0 || int.Parse(SelectedKeyboard.Pro.ProDiscount) > 100) 
-            {  
-                return false; 
+            if (int.Parse(SelectedKeyboard.Pro.ProDiscount) < 0 || int.Parse(SelectedKeyboard.Pro.ProDiscount) > 100)
+            {
+                MessageBox.Show("Discount must be greater than zero and less than 100");
+                return false;
             }
-            if(int.Parse(SelectedKeyboard.Pro.ProPrice) < 0)
-            {  
-                return false; 
+            if (int.Parse(SelectedKeyboard.Pro.ProPrice) < 0)
+            {
+                MessageBox.Show("Price cannot be less than zero");
+                return false;
             }
             if (SelectedKeyboard.Pro.ProQuantity < 0)
             {
+                MessageBox.Show("Quantity must not be less than zero");
                 return false;
             }
             return true;
         }
-
     }
 }
