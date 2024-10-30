@@ -19,12 +19,8 @@ namespace Repository
             _orderDAO = orderDAO;
         }
 
-        public Task Approve(int id)
-        {
-            throw new NotImplementedException();
-        }
+        
 
-        public async Task<IEnumerable<Order>> GetListOrderConfirm() => await _orderDAO.GetListOrderConfirm();
 
         public async Task<List<int>> GetMonthlyOrders() => await _orderDAO.GetMonthlyOrders();
 
@@ -36,9 +32,54 @@ namespace Repository
 
         public async Task<long> GetTotalRevenue() => await _orderDAO.GetTotalRevenue();
 
-        public Task Reject(int id)
+        public async Task Approve(int id)
         {
-            throw new NotImplementedException();
+            await _orderDAO.Approve(id);
         }
+
+        public async Task<Order> GetById(int id)
+        {
+            return await _orderDAO.GetById(id);
+        }
+
+        public async Task<IEnumerable<Order>> GetListOrderConfirm() => await _orderDAO.GetListOrderConfirm();
+
+
+
+        public async Task<IEnumerable<OrderDetail>> GetListOrderDetail(int id)
+        {
+            return await _orderDAO.GetListOrderDetail(id);
+        }
+
+        public async Task<IEnumerable<Order>> GetListOrderUpdate()
+        {
+            return await _orderDAO.GetListOrderUpdate();
+        }
+
+        public async Task<IEnumerable<Order>> GetOrderStatisticDay(string date)
+        {
+            return await _orderDAO.GetOrderStatisticDay(date);
+        }
+
+        public async Task<IEnumerable<Order>> GetOrderStatisticMonth(string month)
+        {
+            return await _orderDAO.GetOrderStatisticMonth(month);
+        }
+        public async Task<IEnumerable<Order>> GetOrderStatisticYear(string year)
+        {
+            return await _orderDAO.GetOrderStatisticYear(year);
+        }
+
+        public async Task Reject(int id)
+        {
+            await _orderDAO.Reject(id);
+        }
+
+        public async Task Update(Order item)
+        {
+            await _orderDAO.Update(item);
+        }
+
+
     }
 }

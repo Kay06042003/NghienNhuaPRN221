@@ -13,6 +13,15 @@ namespace Repository.Interfaces
         Task<IEnumerable<Order>> GetListOrderConfirm();
         Task Approve(int id);
         Task Reject(int id);
+        Task<IEnumerable<OrderDetail>> GetListOrderDetail(int id);
+        Task<Order> GetById(int id);
+
+        Task<IEnumerable<Order>> GetListOrderUpdate();
+
+        Task Update(Order item);
+        Task<IEnumerable<Order>> GetOrderStatisticDay(string date);
+        Task<IEnumerable<Order>> GetOrderStatisticMonth(string month);
+        Task<IEnumerable<Order>> GetOrderStatisticYear(string year);
 
         Task<int> GetOrdersInMonth();
         Task<int> GetPendingOrders();

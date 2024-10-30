@@ -18,15 +18,7 @@ namespace BusinessLogic.Services
             _IOrderRepository = orderRepository;        
         }
 
-        public Task Approve(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IEnumerable<Order>> GetListOrderConfirm()
-        {
-            return await _IOrderRepository.GetListOrderConfirm();
-        }
+       
 
         public async Task<List<int>> GetMonthlyOrders()
         {
@@ -52,10 +44,55 @@ namespace BusinessLogic.Services
         {
             return await _IOrderRepository.GetTotalRevenue();
         }
-
-        public Task Reject(int id)
+        public async Task Approve(int id)
         {
-            throw new NotImplementedException();
+            await _IOrderRepository.Approve(id);
         }
+
+        public async Task<Order> GetById(int id)
+        {
+            return await _IOrderRepository.GetById(id);
+        }
+
+        public async Task<IEnumerable<Order>> GetListOrderConfirm()
+        {
+            return await _IOrderRepository.GetListOrderConfirm();
+        }
+
+        public async Task<IEnumerable<OrderDetail>> GetListOrderDetail(int id)
+        {
+            return await _IOrderRepository.GetListOrderDetail(id);
+        }
+
+        public async Task<IEnumerable<Order>> GetListOrderUpdate()
+        {
+            return await _IOrderRepository.GetListOrderUpdate();
+        }
+
+        public async Task<IEnumerable<Order>> GetOrderStatisticDay(string date)
+        {
+            return await _IOrderRepository.GetOrderStatisticDay(date);
+        }
+
+        public async Task<IEnumerable<Order>> GetOrderStatisticMonth(string month)
+        {
+            return await _IOrderRepository.GetOrderStatisticMonth(month);
+        }
+        public async Task<IEnumerable<Order>> GetOrderStatisticYear(string year)
+        {
+            return await _IOrderRepository.GetOrderStatisticYear(year);
+        }
+
+
+        public async Task Reject(int id)
+        {
+            await _IOrderRepository.Reject(id);
+        }
+
+        public async Task Update(Order item)
+        {
+            await _IOrderRepository.Update(item);
+        }
+
     }
 }
