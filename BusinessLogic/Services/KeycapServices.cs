@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Interfaces;
 using Models;
+using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,38 +9,38 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Services
 {
-    public class KeycapServices
+    public class KeycapServices : IKeycapServices
     {
-        private IKeycapServices _keycapServices;
+        private IKeycapRepository _keycapRepository;
 
-        public KeycapServices(IKeycapServices keycapServices)
+        public KeycapServices(IKeycapRepository keycapRepository)
         {
-            _keycapServices = keycapServices;
+            _keycapRepository = keycapRepository;
         }
 
         public async Task Add(Keycap item)
         {
-            await _keycapServices.Add(item);
+            await _keycapRepository.Add(item);
         }
 
         public async Task Delete(int id)
         {
-            await _keycapServices.Delete(id);
+            await _keycapRepository.Delete(id);
         }
 
         public async Task<Keycap> GetById(int id)
         {
-            return await _keycapServices.GetById(id);
+            return await _keycapRepository.GetById(id);
         }
 
         public async Task<IEnumerable<Keycap>> GetListAll()
         {
-            return await _keycapServices.GetListAll();
+            return await _keycapRepository.GetListAll();
         }
 
         public async Task Update(Keycap item)
         {
-            await _keycapServices.Update(item);
+            await _keycapRepository.Update(item);
         }
     }
 }

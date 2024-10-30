@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Interfaces;
+using Models;
 using NghienNhuaWPF.Utilities;
 using System;
 using System.Collections.Generic;
@@ -16,11 +17,13 @@ namespace NghienNhuaWPF.ViewModels
     public class LoginViewModel : BaseViewModel
     {
         private readonly IAccountServices _accountServices;
+        private readonly IStaffServices _staffServices;
         public ICommand LoginCommand { get; }
 
-        public LoginViewModel(IAccountServices accountServices)
+        public LoginViewModel(IAccountServices accountServices, IStaffServices staffServices)
         {
             _accountServices = accountServices;
+            _staffServices = staffServices;
             LoginCommand = new RelayCommand(Login);
         }
 
@@ -83,11 +86,10 @@ namespace NghienNhuaWPF.ViewModels
             }
         }
 
-        private void Login(object parametter)
+        private async void Login(object parametter)
         {
             try
             {
-                // Kiểm tra tính hợp lệ của dữ liệu đầu vào
                 if (string.IsNullOrEmpty(accGmail))
                 {
                     MessageBox.Show("Tên đăng nhập không được để trống.");
@@ -100,30 +102,42 @@ namespace NghienNhuaWPF.ViewModels
                     return;
                 }
 
-                // Chuyển đổi SecureString sang string và hash mật khẩu bằng MD5
                 string passwordString = _accountServices.MD5Hash(passWord);
-                // Gọi dịch vụ đăng nhập và kiểm tra kết quả
-                var loginResult =  _accountServices.loginAccount(accGmail, passwordString);
+                var loginResult = _accountServices.loginAccount(accGmail, passwordString);
 
-                // Xử lý kết quả đăng nhập
                 if (loginResult != null)
-                {
-                    Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity(accGmail), null);
+                { 
+                    var account = await _accountServices.GetAccountByAccGmail(accGmail);
+
+                    if (account.Role == "3" || account.Role == "2")
+                    {
+                        var user = await _staffServices.GetByAccId(account.AccId);
+                        if (user.StaffStatus == "Working")
+                        {
+                            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity(accGmail), null);
+                            isViewVisible = false;
+                        }
+                        else 
+                        {
+                            MessageBox.Show("Tài khoản của dã bị khóa");
+                        }
+                    }
+                    else 
+                    {
+                        MessageBox.Show("Tài khoản của bạn không có quyền truy cập vào ứng dụng này");
+                    }
                     
-                    isViewVisible = false;
-                    // Thực hiện các bước tiếp theo sau khi đăng nhập thành công (ví dụ: điều hướng tới màn hình chính)
                 }
                 else
                 {
-                    errorMessage = "* Invalid username or password";
+                    errorMessage = "* Sai Email hoặc mật khẩu";
                 }
             }
             catch (Exception ex)
             {
-                // Xử lý các lỗi có thể xảy ra trong quá trình đăng nhập
                 MessageBox.Show($"Đã xảy ra lỗi khi đăng nhập: {ex.Message}");
             }
         }
-        
+
     }
 }

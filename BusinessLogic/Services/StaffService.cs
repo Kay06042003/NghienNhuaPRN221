@@ -17,11 +17,7 @@ namespace BusinessLogic.Services
         {
             _staffRepository = staffRepository;
         }
-
-        //public StudentService()
-        //{
-        //}
-
+    
         public async Task<IEnumerable<Staff>> GetListAllStaff()
         {
             return await _staffRepository.GetListAll();
@@ -48,6 +44,21 @@ namespace BusinessLogic.Services
         {
             // Thêm logic nghiệp vụ nếu cần
             await _staffRepository.Delete(id);
+        }
+
+        public async Task<Staff> GetByAccId(int id)
+        {
+            return await _staffRepository.GetByAccId(id);
+        }
+
+        public async Task RecoverStaff(int id)
+        {
+            await _staffRepository.Recover(id);
+        }
+
+        public async Task<Staff> GetByAccGmail(string accGmail)
+        {
+            return await _staffRepository.GetByAccGmail(accGmail);
         }
     }
 }

@@ -1,26 +1,19 @@
 ﻿using BusinessLogic.Interfaces;
 using FontAwesome.Sharp;
 using Models;
-using NghienNhuaWPF.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace NghienNhuaWPF.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
-        private User _currentUser;
+        private Staff _currentUser;
         private string _caption;
         private IconChar _icon;
 
-        private IUserServices _userServices;
+        private IStaffServices _staffServices;
         private IAccountServices _accountServices;
 
-        public User CurrentUser
+        public Staff CurrentStaff
         {
             get
             {
@@ -29,7 +22,7 @@ namespace NghienNhuaWPF.ViewModels
             set
             {
                 _currentUser = value;
-                OnPropertyChanged(nameof(CurrentUser));
+                OnPropertyChanged(nameof(CurrentStaff));
             }
         }
         public string Caption
@@ -58,12 +51,12 @@ namespace NghienNhuaWPF.ViewModels
         }
 
 
-        public MainViewModel(IAccountServices accountServices, IUserServices userServices)
+        public MainViewModel(IAccountServices accountServices, IStaffServices staffServices)
         {
             _accountServices = accountServices;
-            _userServices = userServices;
-            CurrentUser = new User();
+            CurrentStaff = new Staff();
             LoadCurrentUserData();
+            _staffServices = staffServices;
         }
 
         private async void LoadCurrentUserData()
@@ -71,15 +64,17 @@ namespace NghienNhuaWPF.ViewModels
             var account = await _accountServices.GetAccountByAccGmail(Thread.CurrentPrincipal.Identity.Name);
             if (account != null)
             {
-                var user = await _userServices.GetUserByAccId(account.AccId);
+                var user = await _staffServices.GetByAccId(account.AccId);
 
-                CurrentUser = new User
-                {
-                    UserId = user.UserId,
-                    UserFullname = user.UserFullname,
-                    UserSdt = user.UserSdt,
-                    UserAddress = user.UserAddress
-                };
+                CurrentStaff = new Staff
+                    {
+                        StaffId = user.StaffId,
+                        StaffFullname = user.StaffFullname,
+                        StaffAddress = user.StaffAddress,
+                        StaffCitizenIdentityNumber = user.StaffCitizenIdentityNumber,
+                        StaffDateOfBirth = user.StaffDateOfBirth,
+                        StaffStatus = user.StaffStatus,
+                    };
             }
         }
     }

@@ -12,7 +12,7 @@ namespace DataAccess.DAO
     {
         public async Task<IEnumerable<Mouse>> GetListALl()
         {
-            return await _context.Mice.ToListAsync();
+            return await _context.Mice.Include(m => m.Pro).ToListAsync();
         }
 
         public async Task<Mouse> GetById(int id)

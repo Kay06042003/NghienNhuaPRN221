@@ -21,5 +21,8 @@ namespace Repository
         public async Task Add(Staff item) => await _staffDAO.Add(item);
         public async Task Update(Staff item) => await _staffDAO.Update(item);
         public async Task Delete(int id) => await _staffDAO.Delete(id);
+        public async Task<Staff> GetByAccId(int id) => await _staffDAO.GetByAccId(id);
+        public async Task Recover(int id) => await _staffDAO.Recover(id);
+        public async Task<Staff> GetByAccGmail(string accGmail) => await _staffDAO.GetByAccGmail(accGmail);
     }
 }
