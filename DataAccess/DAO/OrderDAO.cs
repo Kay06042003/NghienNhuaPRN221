@@ -11,10 +11,7 @@ namespace DataAccess.DAO
 {
     public class OrderDAO : SingletonBase<OrderDAO>
     {
-        public async Task<IEnumerable<Order>> GetListOrderConfirm()
-        {
-            return await _context.Orders.ToListAsync();
-        }
+        
 
         public async Task<int> GetOrdersInMonth()
         {
@@ -30,7 +27,7 @@ namespace DataAccess.DAO
         public async Task<int> GetPendingOrders()
         {
             return await _context.Orders
-                .Where(o => o.OrderStatus == "Pending")
+                .Where(o => o.OrderStatus == "Waiting Accept - COD")
                 .CountAsync(); 
         }
 
@@ -89,6 +86,91 @@ namespace DataAccess.DAO
                                .ToDictionaryAsync(g => g.Category, g => g.QuantitySold);
 
             return result;
+        }
+
+        public async Task<IEnumerable<Order>> GetListOrderConfirm()
+        {
+            return await _context.Orders.AsNoTracking().Where(o => o.OrderStatus == "Waiting Accept - COD").ToListAsync();
+        }
+
+        public async Task Approve(int id)
+        {
+            Order order = await GetById(id);
+            order.OrderStatus = "Accepted - COD";
+            _context.Orders.Update(order);
+            await _context.SaveChangesAsync();
+
+        }
+        public async Task<Order> GetById(int id)
+        {
+            var item = await _context.Orders.FirstOrDefaultAsync(c => c.OrderId == id);
+            if (item == null) return null;
+            return item;
+        }
+        public async Task<IEnumerable<OrderDetail>> GetListOrderDetail(int id)
+        {
+            return await _context.OrderDetails.AsNoTracking().Where(o => o.OrderId == id).ToListAsync();
+        }
+        public async Task Reject(int id)
+        {
+            Order order = await GetById(id);
+            order.OrderStatus = "Rejected - COD";
+            _context.Orders.Update(order);
+            await _context.SaveChangesAsync();
+
+        }
+
+        public async Task<IEnumerable<Order>> GetListOrderUpdate()
+        {
+            var order = await _context.Orders.AsNoTracking().Where(o => o.OrderStatus != "Waiting Accept - COD" && o.OrderStatus != "Rejected - COD"
+            && o.OrderStatus != "Delivery successful - COD" && o.OrderStatus != "Delivery successful - Banking"
+            && o.OrderStatus != "Delivery failed - COD" && o.OrderStatus != "Delivery failed - Banking").ToListAsync();
+            return order;
+
+        }
+        public async Task<IEnumerable<Order>> GetOrderStatisticDay(string date)
+        {
+
+            var orders = await _context.Orders
+            .AsNoTracking()
+            .Where(o => o.OrderDate.ToString() == date && o.OrderStatus != "Waiting Accept - COD"
+            && o.OrderStatus != "Delivery successful - COD" && o.OrderStatus != "Delivery failed - COD" && o.OrderStatus != "Delivery failed - Banking" &&
+            o.OrderStatus != "Delivery successful - Banking")
+            .ToListAsync();
+            return orders;
+
+        }
+        public async Task<IEnumerable<Order>> GetOrderStatisticMonth(string month)
+        {
+            var orders = await _context.Orders
+            .AsNoTracking()
+            .Where(o => o.OrderDate.Value.Month == int.Parse(month) && o.OrderStatus != "Waiting Accept - COD"
+            && o.OrderStatus != "Delivery successful - COD" && o.OrderStatus != "Delivery failed - COD" && o.OrderStatus != "Delivery failed - Banking" &&
+            o.OrderStatus != "Delivery successful - Banking")
+            .ToListAsync();
+            return orders;
+
+        }
+        public async Task<IEnumerable<Order>> GetOrderStatisticYear(string year)
+        {
+            var orders = await _context.Orders
+            .AsNoTracking()
+            .Where(o => o.OrderDate.Value.Year == int.Parse(year) && o.OrderStatus != "Waiting Accept - COD"
+            && o.OrderStatus != "Delivery successful - COD" && o.OrderStatus != "Delivery failed - COD" && o.OrderStatus != "Delivery failed - Banking" &&
+            o.OrderStatus != "Delivery successful - Banking")
+            .ToListAsync();
+            return orders;
+
+        }
+
+        public async Task Update(Order item)
+        {
+            var existingItem = await GetById(item.OrderId);
+            if (existingItem != null)
+            {
+                _context.Entry(existingItem).CurrentValues.SetValues(item);
+            }
+            await _context.SaveChangesAsync();
         }
 
     }

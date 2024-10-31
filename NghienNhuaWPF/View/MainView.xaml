@@ -91,11 +91,22 @@
                 </RadioButton>
 
                 <RadioButton Style="{StaticResource menuButton}"
-                             Tag="{StaticResource color3}">
+                             Tag="{StaticResource color1}"
+                             Click="OrderConfirm_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <fa:IconImage Icon="ListUl"
+                                      Style="{StaticResource menuButtonIcon}"/>
+                        <TextBlock Text="Order Confirm"
+                                   Style="{StaticResource menuButtonText}"/>
+                    </StackPanel>
+                </RadioButton>
+                <RadioButton Style="{StaticResource menuButton}"
+                             Tag="{StaticResource color3}"
+                             Click="OrderUpdate_Click">
                     <StackPanel Orientation="Horizontal">
                         <fa:IconImage Icon="Truck"
                                       Style="{StaticResource menuButtonIcon}"/>
-                        <TextBlock Text="Order"
+                        <TextBlock Text="Order Update"
                                    Style="{StaticResource menuButtonText}"/>
                     </StackPanel>
                 </RadioButton>
@@ -169,11 +180,33 @@
                 </RadioButton>
 
                 <RadioButton Style="{StaticResource menuButton}"
-                             Tag="{StaticResource color10}">
+                             Tag="{StaticResource color10}"
+                             Click="OrderStatisticDay_Click">
                     <StackPanel Orientation="Horizontal">
-                        <fa:IconImage Icon="PieChart"
+                        <fa:IconImage Icon="CalendarDays"
                                       Style="{StaticResource menuButtonIcon}"/>
-                        <TextBlock Text="Analys"
+                        <TextBlock Text="Statistic Day"
+                                   Style="{StaticResource menuButtonText}"/>
+                    </StackPanel>
+                </RadioButton>
+
+                <RadioButton Style="{StaticResource menuButton}"
+                             Tag="{StaticResource color2}"
+                             Click="OrderStatisticMonth_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <fa:IconImage Icon="CalendarDay"
+                                      Style="{StaticResource menuButtonIcon}"/>
+                        <TextBlock Text="Statistic Month"
+                                   Style="{StaticResource menuButtonText}"/>
+                    </StackPanel>
+                </RadioButton>
+                <RadioButton Style="{StaticResource menuButton}"
+                             Tag="{StaticResource color3}"
+                             Click="OrderStatisticYear_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <fa:IconImage Icon="Calendar"
+                                      Style="{StaticResource menuButtonIcon}"/>
+                        <TextBlock Text="Statistic Year"
                                    Style="{StaticResource menuButtonText}"/>
                     </StackPanel>
                 </RadioButton>
@@ -277,7 +310,7 @@
                                               Style="{StaticResource iconButtonIcon}"/>
                             </Button>
 
-                            <TextBlock Text="{Binding CurrentUser.StaffFullname}"
+                            <TextBlock Text="{Binding CurrentStaff.StaffFullname}"
                                        Foreground="{StaticResource titleColor3}"
                                        FontFamily="Montserrat"
                                        FontSize="12"

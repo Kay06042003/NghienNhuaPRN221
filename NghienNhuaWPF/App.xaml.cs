@@ -88,6 +88,11 @@ namespace NghienNhuaWPF
             services.AddTransient<MouseViewModel>();
             services.AddTransient<EarphoneViewModel>();
             services.AddTransient<HomeViewModel>();
+            services.AddTransient<OrderConfirmViewModel>();
+            services.AddTransient<OrderUpdateViewModel>();
+            services.AddTransient<OrderStatisticDayViewModel>();
+            services.AddTransient<OrderStatisticMonthViewModel>();
+            services.AddTransient<OrderStatisticYearViewModel>();
 
             // Đăng ký MainWindow
             services.AddSingleton<MainView>();

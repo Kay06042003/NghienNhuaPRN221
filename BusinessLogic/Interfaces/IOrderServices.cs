@@ -18,5 +18,13 @@ namespace BusinessLogic.Interfaces
         Task<long> GetTotalRevenue();
         Task<List<int>> GetMonthlyOrders();
         Task<Dictionary<string, int>> GetSalesByCategory();
+
+        Task<IEnumerable<OrderDetail>> GetListOrderDetail(int id);
+        Task<Order> GetById(int id);
+        Task<IEnumerable<Order>> GetListOrderUpdate();
+        Task Update(Order item);
+        Task<IEnumerable<Order>> GetOrderStatisticDay(string date);
+        Task<IEnumerable<Order>> GetOrderStatisticMonth(string month);
+        Task<IEnumerable<Order>> GetOrderStatisticYear(string year);
     }
 }

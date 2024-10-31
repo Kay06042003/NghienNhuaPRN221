@@ -114,7 +114,8 @@ namespace NghienNhuaWPF.ViewModels
         private void ExportToExcel(object obj)
         {
             OfficeOpenXml.ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
-            string excelFolder = @"C:\Users\thinh\Documents\GitHub\NghienNhuaPRN221\NghienNhuaWPF\Excels";
+            string projectRoot = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.Parent.FullName;
+            string excelFolder = Path.Combine(projectRoot, "Excels");
 
             if (!Directory.Exists(excelFolder))
             {

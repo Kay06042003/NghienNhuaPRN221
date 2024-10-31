@@ -28,7 +28,16 @@ namespace NghienNhuaWPF
         private readonly MouseViewModel _mouseViewModel;
         private readonly EarphoneViewModel _eyephoneViewModel;
         private readonly HomeViewModel _homeViewModel;
-        public MainView(MainViewModel mainViewModel, StaffViewModel staffViewModel, KeyboardViewModel keyboardViewModel, KeycapViewModel keycapViewModel, SwitchViewModel switchViewModel, KitViewModel kitViewModel, MouseViewModel mouseViewModel, HomeViewModel homeViewModel, EarphoneViewModel eyephoneViewModel)
+        private readonly OrderConfirmViewModel _orderConfirmViewModel;
+        private readonly OrderUpdateViewModel _orderUpdateViewModel;
+        private readonly OrderStatisticDayViewModel _orderStatisticDayViewModel;
+        private readonly OrderStatisticMonthViewModel _orderStatisticMonthViewModel;
+        private readonly OrderStatisticYearViewModel _orderStatisticYearViewModel;
+        public MainView(MainViewModel mainViewModel, StaffViewModel staffViewModel, KeyboardViewModel keyboardViewModel,
+            KeycapViewModel keycapViewModel, SwitchViewModel switchViewModel, KitViewModel kitViewModel,
+            MouseViewModel mouseViewModel, HomeViewModel homeViewModel, EarphoneViewModel eyephoneViewModel, OrderConfirmViewModel orderConfirmViewModel,
+            OrderUpdateViewModel orderUpdateViewModel, OrderStatisticDayViewModel orderStatisticDayViewModel, OrderStatisticMonthViewModel orderStatisticMonthViewModel,
+            OrderStatisticYearViewModel orderStatisticYearViewModel)
         {
             InitializeComponent();
             this.DataContext = mainViewModel;
@@ -40,6 +49,13 @@ namespace NghienNhuaWPF
             _mouseViewModel = mouseViewModel;
             _homeViewModel = homeViewModel;
             _eyephoneViewModel = eyephoneViewModel;
+            _orderConfirmViewModel = orderConfirmViewModel;
+            _orderUpdateViewModel = orderUpdateViewModel;
+            _orderStatisticDayViewModel = orderStatisticDayViewModel;
+            _orderStatisticMonthViewModel = orderStatisticMonthViewModel;
+            _orderStatisticYearViewModel = orderStatisticYearViewModel;
+
+
         }
 
         [DllImport("user32.dll")]
@@ -98,19 +114,44 @@ namespace NghienNhuaWPF
             frMain.Content = new SwitchView(_switchViewModel);
         }
 
-        private void KitView_Click(Object sender, RoutedEventArgs e) 
+        private void KitView_Click(Object sender, RoutedEventArgs e)
         {
             frMain.Content = new KitView(_kitViewModel);
         }
 
-        private void MouseView_Click(object obj, RoutedEventArgs e) 
+        private void MouseView_Click(object obj, RoutedEventArgs e)
         {
             frMain.Content = new MouseView(_mouseViewModel);
         }
 
-        private void EarphoneView_Click(object obj, RoutedEventArgs e) 
+        private void EarphoneView_Click(object obj, RoutedEventArgs e)
         {
             frMain.Content = new EarphoneView(_eyephoneViewModel);
+        }
+        private void OrderConfirm_Click(object sender, RoutedEventArgs e)
+        {
+            frMain.Content = new OrderConfirmView(_orderConfirmViewModel);
+        }
+        private void OrderUpdate_Click(object sender, RoutedEventArgs e)
+        {
+
+            frMain.Content = new OrderUpdateView(_orderUpdateViewModel);
+        }
+        private void OrderStatisticDay_Click(object sender, RoutedEventArgs e)
+        {
+
+            frMain.Content = new OrderStatisticDayView(_orderStatisticDayViewModel);
+        }
+
+        private void OrderStatisticMonth_Click(object sender, RoutedEventArgs e)
+        {
+
+            frMain.Content = new OrderStatisticMonthView(_orderStatisticMonthViewModel);
+        }
+        private void OrderStatisticYear_Click(object sender, RoutedEventArgs e)
+        {
+
+            frMain.Content = new OrderStatisticYearView(_orderStatisticYearViewModel);
         }
     }
 }
