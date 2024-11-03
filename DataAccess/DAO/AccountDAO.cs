@@ -12,6 +12,41 @@ namespace DataAccess.DAO
     public class AccountDAO : SingletonBase<AccountDAO>
     {
 
+        public Account addAccount(Account account)
+        {
+            var accountExist = _context.Accounts.FirstOrDefault(x => x.AccId == account.AccId);
+            if (accountExist == null)
+            {
+                account.Role = "1";
+                _context.Accounts.Add(account);
+                _context.SaveChanges();
+                return account;
+            }
+            return null;
+        }
+
+        public Account getAccount(int accId)
+        {
+            if (accId <= 0)
+            {
+                return null;
+            }
+            return _context.Accounts.FirstOrDefault(x => x.AccId == accId);
+        }
+
+        public Account updateAccount(Account account)
+        {
+            var accountExist = _context.Accounts.FirstOrDefault(x => x.AccId == account.AccId);
+            if (accountExist != null)
+            {
+                accountExist.AccGmail = account.AccGmail;
+                accountExist.AccPassword = account.AccPassword;
+                _context.SaveChanges();
+                return accountExist;
+            }
+            return null;
+        }
+
         public Account loginAccount(string accGmail, string hashedPassword)
         {
             var account = _context.Accounts
@@ -49,11 +84,12 @@ namespace DataAccess.DAO
 
         public async Task Update(Account acc)
         {
-            if (accId <= 0)
+            var existingItem = await GetById(acc.AccId);
+            if (existingItem != null)
             {
-                return null;
+                _context.Entry(existingItem).CurrentValues.SetValues(acc);
             }
-            return _context.Accounts.FirstOrDefault(x => x.AccId == accId);
+            await _context.SaveChangesAsync();
         }
 
         public async Task Delete(int id)

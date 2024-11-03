@@ -50,5 +50,20 @@ namespace Repository
         {
             return await accountDAO.updateUserAsync(user);
         }
+
+        public Account addAccount(Account account)
+        {
+            return accountDAO.addAccount(account);
+        }
+
+        public Account getAccount(int accId)
+        {
+            return accountDAO.getAccount(accId);
+        }
+
+        public Account updateAccount(Account account)
+        {
+            return accountDAO.updateAccount(account);
+        }
     }
 }
