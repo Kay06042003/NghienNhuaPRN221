@@ -89,9 +89,10 @@
                                         int discount = Convert.ToInt32(Model.Product.ProDiscount);
                                         int priceBeforeDiscount = price + (price * discount / 100);
                                         <span class="h5 text-decoration-line-through text-muted fs-4 text">
-                                            
+
                                             <p class="d-inline text">
-                                                ₫@priceBeforeDiscount.ToString("#,0", CultureInfo.CreateSpecificCulture("vi-VN"))</p>
+                                                ₫@priceBeforeDiscount.ToString("#,0",
+                                                    CultureInfo.CreateSpecificCulture("vi-VN"))</p>
                                         </span>
                                     }
                                 }
@@ -99,7 +100,8 @@
                                     @{
                                         int price2 = Convert.ToInt32(Model.Product.ProPrice);
                                     }
-                                    <p class="d-inline text">₫@price2.ToString("#,0", CultureInfo.CreateSpecificCulture("vi-VN"))</p>
+                                    <p class="d-inline text">₫@price2.ToString("#,0",
+                                        CultureInfo.CreateSpecificCulture("vi-VN"))</p>
                                     </p>
                                 </span>
                             </div>
@@ -435,7 +437,8 @@
                                                     @product.ProName
                                                 </a>
                                                 <strong class="text-dark"> ₫
-                                                    @price.ToString("#,0", CultureInfo.CreateSpecificCulture("vi-VN")) </strong>
+                                                    @price.ToString("#,0", CultureInfo.CreateSpecificCulture("vi-VN"))
+                                                </strong>
                                             </div>
                                         </div>
                                     }

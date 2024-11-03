@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Models;
 using System;
 using System.Collections.Generic;
@@ -10,6 +10,32 @@ namespace DataAccess.DAO
 {
     public class UserDAO : SingletonBase<UserDAO>
     {
+
+        public async Task<User> getUserAsync(int accId)
+        {
+            return await _context.Users
+                .Where(x => x.AccId == accId)
+                .FirstOrDefaultAsync();
+        }
+
+        // add user async
+        public async Task addUserAsync(User user)
+        {
+            await _context.SaveChangesAsync();
+        }
+        // update user async
+        public async Task updateUserAsync(User user)
+        {
+            var userExist = _context.Users.FirstOrDefault(x => x.AccId == user.AccId);
+            if (userExist != null)
+            {
+                userExist.UserFullname = user.UserFullname;
+                userExist.UserAddress = user.UserAddress;
+                userExist.UserSdt = user.UserSdt;
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public User addUser(User user)
         {
             var userExist = _context.Users.FirstOrDefault(x => x.AccId == user.AccId);
@@ -35,18 +61,5 @@ namespace DataAccess.DAO
             }
             return user;
         }
-
-        /*public User updateUser(User user)
-        {
-            var userExist = _context.Accounts.FirstOrDefault(x => x.AccId == user.AccId);
-            if (userExist != null)
-            {
-                userExist.AccGmail = user.;
-                userExist.AccPassword = user.AccPassword;
-                _context.SaveChanges();
-                return accountExist;
-            }
-            return null;
-        }*/
     }
 }

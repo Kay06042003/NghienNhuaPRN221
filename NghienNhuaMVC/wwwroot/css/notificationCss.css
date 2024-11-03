@@ -101,6 +101,10 @@
 .btn#error {
     background: var(--error);
 }
+.toast.ErrorCart::before,
+.btn#error {
+    background: var(--error);
+}
 
 .toast.login::before,
 .btn#login {
@@ -145,6 +149,9 @@
 }
 
 .toast.error .column i {
+    color: var(--error);
+}
+.toast.ErrorCart .column i {
     color: var(--error);
 }
 

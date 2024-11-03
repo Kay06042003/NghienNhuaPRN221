@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 
 namespace NghienNhuaMVC.Services
@@ -9,7 +11,26 @@ namespace NghienNhuaMVC.Services
     {
         public Task SendEmailAsync(string email, string subject, int code, string name)
         {
-            throw new NotImplementedException();
+            var mail = "nghiennhuastore179@gmail.com";
+            var pw = "qlkqqvofkuxiwjrz";
+
+            var client = new SmtpClient("smtp.gmail.com", 587)
+            {
+                Credentials = new NetworkCredential(mail, pw),
+                EnableSsl = true
+            };
+
+            return client.SendMailAsync(
+                new MailMessage(
+                    from: mail,
+                    to: email,
+                    subject,
+                    body: htmlMess(code, name)
+                    )
+                {
+                    IsBodyHtml = true
+                }
+            );
         }
 
         public string htmlMess(int code, string name)

@@ -21,6 +21,16 @@ namespace BusinessLogic.Services
         {
             return _productRepository.GetAll();
         }
+        
+        public async Task<Product> GetProductByProID(int proId)
+        {
+            return await _productRepository.GetProductByProID(proId);
+        }
+
+        public async Task<IEnumerable<Product>> SearchProduct(string txt)
+        {
+            return await _productRepository.SearchProduct(txt);
+        }
 
         public async Task<IEnumerable<Product>> GetListAllProduct()
         {

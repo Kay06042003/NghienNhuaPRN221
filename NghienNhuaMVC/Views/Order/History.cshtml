@@ -1,0 +1,122 @@
+@model IEnumerable<Order>
+@using System.Globalization;
+@{
+    ViewData["Title"] = "History";
+     Layout = "~/Views/Shared/_LayoutOrder.cshtml";
+}
+
+
+<div class="main" style=" width: 100%; height: auto; min-height: 500px; padding-bottom: 50px;margin-top: 150px">
+    <div class="container" style=" height: auto; margin-bottom: 50px">
+        <div class="right">
+            <div class="container paySlide">
+                <h3> ĐƠN HÀNG CỦA BẠN</h3>
+                @{
+                    List<OrderDetail> list = ViewBag.orderDetails;
+                    List<Product> products = ViewBag.products;
+                    var total_price = 0;
+                    var status = "";
+                }
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    <table class="table totalTable">
+                        <thead>
+                            <tr class="amoutTable">
+                                <th class="sp">
+                                    SẢN PHẨM
+                                </th>
+                                <th class="tamTinh codengu text-left">
+                                    TẠM TÍNH
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="productShow">
+
+                            @foreach (var item in list)
+                            {
+                                total_price += int.Parse(item.OdPrice) * (item.OdQuantity ?? 0);
+                                <tr class="productShow-Items">
+                                    <td class="productShow-Items-Names">
+                                        @products.FirstOrDefault(p => p.ProId == item.ProId).ProName <strong> x
+                                            @item.OdQuantity</strong>
+                                    </td>
+                                    @{
+                                        var price = int.Parse(item.OdPrice) * (item.OdQuantity ?? 0);
+                                        var priceString = price.ToString("C", CultureInfo.CreateSpecificCulture("vi-VN"));
+                                    }
+                                    <td class="productShow-Items-Price codengu">₫ @priceString
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr class="amoutTable">
+                                <td>
+                                    Tạm tính
+                                </td>
+                                <td class="totalBefore codengu text-left">
+                                ₫@total_price
+                                </td>
+                            </tr>
+                            <tr class="shipmountTable">
+                                <th>Giao hàng</th>
+                                <td>
+                                    <div class="giaoHang">
+                                        <div>
+                                            <span>Đồng giá: </span>
+                                        </div>
+                                        <div>
+                                            
+                                            <span>₫20,000</span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="amoutTable">
+                                <td>
+                                    Tổng
+                                </td>
+                                <td class="totalAfter codengu text-left">
+                                    ₫ @(total_price + 20000)
+                                </td>
+
+                            </tr>
+                            <tr class="amoutTable">
+                                <td>
+                                    Tình Trạng Đơn Hàng
+                                </td>
+                                <td class="totalAfter codengu">
+                             @{
+                                status = Model.ElementAt(i).OrderStatus;
+                                if (status.Contains("Waiting Accept"))
+                                {
+                                            <div class="text fw-bold text-left" style="color: #e4af45">
+                                        @status
+                                            </div>
+                                }
+                                else if (status.Contains("Reject"))
+                                {
+                                            <div class="text fw-bold text-left" style="color: red">
+                                        @status
+                                            </div>
+                                }
+                                else
+                                {
+                                            <div class="text fw-bold text-left d-inline-block" style="color: green">
+                                        @status
+                                            </div>
+                                }
+                            }
+                                </td>
+
+                            </tr>
+
+                        </tfoot>
+                    </table>
+                }
+
+            </div>
+
+        </div>
+    </div>
+</div>

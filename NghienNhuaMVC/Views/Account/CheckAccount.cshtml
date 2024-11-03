@@ -1,0 +1,53 @@
+@{
+    ViewData["Title"] = "CheckAccount";
+    Layout = "~/Views/Shared/_LayoutOrder.cshtml";
+}
+<div class="main" style=" width: 100%; height: auto; padding-bottom: 20px;margin-top: 150px">
+    <div class="container" style=" height: auto;">
+        <form asp-action="CheckAccount" id="form" method="post">
+            <div class="row justify-content-center ">
+                <div class="col-md-7 center" style="border: 2px solid;">
+                    <div class="container information ">
+                        <h3 class=" text-center">THÔNG TIN KHÁCH HÀNG</h3>
+                        <div class="nameUser row">
+                            <label class="form-label " for="name">Tên:<span style="color: red">*</span></label>
+                            <input type="text" class="form-control-sm  form-input" id="fullName" name="txtName"
+                                autocomplete="off">
+                            <div class="form-message text-start"></div>
+                        </div>
+                        <div class="PhoneUser row">
+                            <label class="form-label" for="phone">Số điện thoại:<span
+                                    style="color: red">*</span></label>
+                            <input type="text" class="form-control-sm form-input" id="phone" name="txtPhone"
+                                autocomplete="off">
+                            <div class="form-message text-start"></div>
+                        </div>
+                        <div class="mailUser row">
+                            <label class="form-label" for="mail">Địa chỉ email:</label>
+                            <input type="text" class="form-control-sm form-input" id="email" name="txtEmail"
+                                autocomplete="off" value="@ViewData["email"]" readonly="">
+                            <div class=" form-message text-start">
+                            </div>
+                        </div>
+                        <div class="addressUser row">
+                            <label class="form-label" for="address">Địa chỉ:<span style="color: red">*</span></label>
+                            <input type="text" class="form-control-sm form-input" id="add" name="txtAddress"
+                                placeholder="Ví dụ: 89/3 Nguyễn Thông, An Thới, Bình Thủy, Cần Thơ" autocomplete="off">
+                            <div class="form-message text-start"></div>
+                        </div>
+                        <div class="addressUser row">
+                            <label class="form-label" for="address">Mật khẩu:<span style="color: red">*</span></label>
+                            <input type="password" class="form-control-sm form-input" id="password" name="txtPassword"
+                                placeholder="Mật khẩu" autocomplete="off">
+                            <div class="form-message text-start"></div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <input type="submit" class="btn mb-4 ms-2" name="btnUserInfo" value="Thêm người dùng"
+                            style="background-color: rgb(210, 110, 75); color: white">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

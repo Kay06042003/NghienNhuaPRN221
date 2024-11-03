@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,13 +11,16 @@ namespace BusinessLogic.Services
 {
     public class AccountServices : IAccountServices
     {
-        private readonly IAccountRepository _accountRepository;
+        private readonly IAccountRepository accountRepository;
 
         public AccountServices(IAccountRepository accountRepository)
         {
-            _accountRepository = accountRepository;
+            this.accountRepository = accountRepository;
         }
-
+        public Account addAccount(Account account)
+        {
+            return accountRepository.addAccount(account);
+        }
         public async Task Add(Account item)
         {
             await _accountRepository.Add(item);
@@ -26,6 +29,24 @@ namespace BusinessLogic.Services
         public async Task Delete(int id)
         {
             await _accountRepository.Delete(id);
+        }
+        public async Task<Account> getAccountAsync(string accountGmail, string accountPassword) {
+            return await accountRepository.getAccountAsync(accountGmail, accountPassword);
+        }
+
+        public async Task<Account> getUserAsync(string accountGmail)
+        {
+            return await accountRepository.getUserAsync(accountGmail);
+        }
+
+        public Task<Account> getAccountAsync(string accountGmail)
+        {
+           return accountRepository.getAccountAsync(accountGmail);
+        }
+
+        public async Task<User> updateUserAsync(User user)
+        {
+            return await accountRepository.updateUserAsync(user);
         }
 
         public async Task<Account> GetAccountByAccGmail(string accGmail)

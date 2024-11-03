@@ -5,6 +5,9 @@ using Repository.Interfaces;
 using BusinessLogic.Services;
 using Repository;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using NghienNhuaMVC.Services;
+using NghienNhuaMVC.Middleware;
+using Microsoft.AspNetCore.Authentication.Google;
 namespace NghienNhuaMVC
 {
     public class Program
@@ -14,7 +17,15 @@ namespace NghienNhuaMVC
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews()
+            .AddNewtonsoftJson(options =>
+                {
+                    // Cấu hình tùy chọn cho Newtonsoft.Json
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                });
+
+            // send email
+            builder.Services.AddTransient<ISendEmail, SendEmail>();
 
             // add session
             builder.Services.AddSession(options =>
@@ -24,6 +35,24 @@ namespace NghienNhuaMVC
                 options.Cookie.IsEssential = true;
             });
 
+
+            // add authentication
+            builder.Services.AddAuthentication(
+                options =>
+                {
+                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+                })
+                .AddCookie("Cookies")
+                .AddGoogle(options =>
+                {
+                    IConfigurationSection googleAuthNSection =
+                        builder.Configuration.GetSection("Authentication:Google");
+
+                    options.ClientId = googleAuthNSection["ClientId"];
+                    options.ClientSecret = googleAuthNSection["ClientSecret"];
+                });
+
             // add services and repository - Account
             builder.Services.AddScoped<IAccountServices, AccountServices>();
             builder.Services.AddScoped<IAccountRepository, AccountRepository>();
@@ -32,7 +61,24 @@ namespace NghienNhuaMVC
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
             builder.Services.AddScoped<ProductDAO>();
+            // add services and repository - User
+            builder.Services.AddScoped<IUserServices, UserServices>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<UserDAO>();
+            // add services and repository - Cart
+            builder.Services.AddScoped<ICartService, CartService>();
+            builder.Services.AddScoped<ICartRepository, CartRepository>();
+            builder.Services.AddScoped<CartDAO>();
+            // add services and repository - Order
+            builder.Services.AddScoped<IOrderServices, OrderServices>();
+            builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+            builder.Services.AddScoped<OrderDAO>();
+            // add services VNPay
+            builder.Services.AddScoped<IVnPayServices, VnPayServices>();
+            // add filter
+            builder.Services.AddScoped<UserAuthorizationFilter>();
 
+            builder.WebHost.ConfigureKestrel(options => { options.ListenLocalhost(5001, listenOptions => { listenOptions.UseHttps(); }); });
             // add razer page
             builder.Services.AddRazorPages();
             var app = builder.Build();
@@ -52,6 +98,7 @@ namespace NghienNhuaMVC
             app.UseSession();
 
             app.UseAuthorization();
+            app.UseMiddleware<LoginMiddleware>();
 
             app.MapControllerRoute(
                 name: "default",

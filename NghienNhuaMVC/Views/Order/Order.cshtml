@@ -1,0 +1,172 @@
+@model IEnumerable<Cart>
+@using System.Globalization;
+@{
+    ViewData["Title"] = "Order";
+    Layout = "~/Views/Shared/_LayoutOrder.cshtml";
+}
+
+
+<ul class="notifications"></ul>
+<!-- main -->
+<div class="main" style=" width: 100%; height: auto; padding-bottom: 50px;margin-top: 150px">
+    <div class="container" style=" height: auto;">
+        <form asp-action="Payment" order-controller="Order" id="form" method="post">
+            <div class="row">
+                <div class="col-md-7 left" style="border: none;">
+                    <div class="container information">
+                        <h3>THÔNG TIN THANH TOÁN</h3>
+
+                        <div class="nameUser row">
+                            <label class="form-label " for="name">Tên:<span style="color: red">*</span></label>
+                            <input type="text" class="form-control-sm name form-input" id="fullName" name="txtName"
+                                autocomplete="off">
+                            <span class="form-message"></span>
+                        </div>
+
+                        <div class="PhoneUser row">
+                            <label class="form-label" for="phone">Số điện thoại:<span
+                                    style="color: red">*</span></label>
+                            <input type="text" class="form-control-sm form-input" id="phone" name="txtPhone"
+                                autocomplete="off">
+                            <span class="form-message"></span>
+                        </div>
+                        <div class="mailUser row">
+                            <label class="form-label" for="mail">Địa chỉ email:</label>
+                            <input type="text" class="form-control-sm form-input" id="email" name="txtEmail"
+                                autocomplete="off">
+                            <span class="form-message"></span>
+                        </div>
+
+                        <div class="nationalUser row">
+                            <label class="form-label" for="name">Quốc gia/Khu vực</label>
+                            <span>Việt Nam</span>
+                        </div>
+                        <div class="addressUser row">
+                            <label class="form-label" for="address">Địa chỉ:<span style="color: red">*</span></label>
+                            <input type="text" class="form-control-sm form-input" id="add" name="txtAddress"
+                                placeholder="Ví dụ: 89/3 Nguyễn Thông, An Thới, Bình Thủy, Cần Thơ" autocomplete="off">
+                            <span class="form-message"></span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-5 right">
+                    <div class="container paySlide">
+                        <h3> ĐƠN HÀNG CỦA BẠN</h3>
+                        <table class="table totalTable">
+                            <thead>
+                                <tr class="amoutTable">
+                                    <th class="sp">
+                                        SẢN PHẨM
+                                    </th>
+                                    <th class="tamTinh">
+                                        TẠM TÍNH
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="productShow">
+                                @{
+                                    var money = 0;
+                                    List<Product> listPro = ViewBag.products;
+                                    for (var i = 0; i < @Model.Count(); i++)
+                                    {
+                                        var pro = listPro[i];
+                                        var cart = @Model.ElementAt(i);
+                                        <tr class="productShow-Items">
+                                            <td class="productShow-Items-Names">
+                                                @pro.ProName <strong> x @cart.CartQuantity</strong>
+                                            </td>
+                                            <td class="productShow-Items-Price">₫
+                                                @{
+                                                    var moneyStr = (int.Parse(pro.ProPrice) * cart.CartQuantity ?? 0).ToString("#,0", CultureInfo.CreateSpecificCulture("vi-VN"));
+
+                                                }
+                                                @moneyStr
+                                            </td>
+                                        </tr>
+                                        money += (cart.CartQuantity ?? 0) * int.Parse(pro.ProPrice);
+                                    }
+                                }
+
+                            </tbody>
+                            <tfoot>
+                                <tr class="amoutTable">
+                                    <td>
+                                        Tạm tính
+                                        </th>
+                                    <td class="totalBefore">
+                                        ₫@money.ToString("#,0", CultureInfo.CreateSpecificCulture("vi-VN"))
+                                    </td>
+                                </tr>
+                                <tr class="shipmountTable">
+                                    <th>Giao hàng</th>
+                                    <td>
+                                        <ul>
+                                            <li>
+                                                <input type="radio" name="check" id="" value="" checked>
+                                                <label for=""><span>Đồng giá: ₫20,000</span></label>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr class="amoutTable">
+                                    <td>
+                                        Tổng
+                                    </td>
+                                    <td class="totalAfter">
+                                        @{
+                                            var total = money + 20000;
+                                        }
+                                        ₫@total.ToString("#,0", CultureInfo.CreateSpecificCulture("vi-VN"))
+                                        <input hidden type="text" name="amount" value="@(money + 20000)">
+                                    </td>
+                                </tr>
+                                <tr class="shipmountTable">
+                                    <th>Phương thức thanh toán</th>
+                                    <td>
+                                        <ul>
+                                            <li>
+                                                <input type="radio" name="o" id="QuetMaQR" value="QuetMaQR">
+                                                <label for="QuetMaQR"><span>Thanh toán quét mã QR</span></label>
+                                            </li>
+                                            <li>
+                                                <input type="radio" name="txtpayment" id="TKNganHang"
+                                                    value="TKNganHang">
+                                                <label for="TKNganHang"><span>Thanh toán bằng TK ngân
+                                                        hàng</span></label>
+                                            </li>
+                                            <li>
+                                                <input type="radio" name="txtpayment" id="QuocTe" value="QuocTe">
+                                                <label for="QuocTe"><span>Thanh toán quốc tế</span></label>
+                                            </li>
+                                            <li>
+                                                <input type="radio" name="txtpayment" id="NhanHang" value="NhanHang"
+                                                    checked>
+                                                <label for="NhanHang"><span>Thanh toán khi nhận hàng</span></label>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tfoot>
+
+
+                        </table>
+                        <div class="buttonPayment">
+                            <input class="buttonPayment" type="submit" name="btnOrder" value="Tiến hành thanh toán" />
+                        </div>
+                        <div class="contentFor">
+                            <p>
+                                Tất cả thông tin của bạn chỉ được sử dụng cho việc đặt hàng và cải thiện trải nghiệm sản
+                                phẩm. Ngoài ra được Nghiện Nhựa đảm bảo về quyền riêng tư cá nhân theo quy định luật
+                                pháp.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>

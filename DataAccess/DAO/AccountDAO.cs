@@ -35,8 +35,7 @@ namespace DataAccess.DAO
         {
             if(acc == null)
                 throw new ArgumentNullException(nameof(acc), "Account cannot be null.");
-
-
+                
             try
             {
                 _context.Accounts.Add(acc);
@@ -50,12 +49,11 @@ namespace DataAccess.DAO
 
         public async Task Update(Account acc)
         {
-            var existingItem = await GetById(acc.AccId);
-            if (existingItem != null)
+            if (accId <= 0)
             {
-                _context.Entry(existingItem).CurrentValues.SetValues(acc);
+                return null;
             }
-            await _context.SaveChangesAsync();
+            return _context.Accounts.FirstOrDefault(x => x.AccId == accId);
         }
 
         public async Task Delete(int id)
@@ -81,8 +79,7 @@ namespace DataAccess.DAO
             {
                 byte[] inputBytes = Encoding.UTF8.GetBytes(password);
                 byte[] hashBytes = md5.ComputeHash(inputBytes);
-
-                // Chuyển đổi byte array sang dạng chuỗi hex
+                                // Chuyển đổi byte array sang dạng chuỗi hex
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < hashBytes.Length; i++)
                 {
@@ -92,5 +89,40 @@ namespace DataAccess.DAO
             }
         }
 
+        public async Task<Account> getAccountAsync(string accountGmail, string accountPassword)
+        {
+            return await _context.Accounts
+                .Where(x => x.AccGmail == accountGmail && x.AccPassword == accountPassword)
+                .Include(x => x.User)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<Account> getUserAsync(string accountGmail) {
+            return await _context.Accounts
+                .Where(x => x.AccGmail == accountGmail)
+                .Include(x => x.User)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<Account> getAccountAsync(string accountGmail)
+        {
+            return await _context.Accounts
+                .Where(x => x.AccGmail == accountGmail)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<User> updateUserAsync(User user)
+        {
+            var userExist = _context.Users.FirstOrDefault(x => x.UserId == user.UserId);
+            if (userExist != null)
+            {
+                userExist.UserFullname = user.UserFullname;
+                userExist.UserSdt = user.UserSdt;
+                userExist.UserAddress = user.UserAddress;
+                _context.SaveChanges();
+                return userExist;
+            }
+            return null;
+        }
     }
 }
