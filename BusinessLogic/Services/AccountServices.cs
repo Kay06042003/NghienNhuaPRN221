@@ -23,12 +23,12 @@ namespace BusinessLogic.Services
         }
         public async Task Add(Account item)
         {
-            await _accountRepository.Add(item);
+            await accountRepository.Add(item);
         }
 
         public async Task Delete(int id)
         {
-            await _accountRepository.Delete(id);
+            await accountRepository.Delete(id);
         }
         public async Task<Account> getAccountAsync(string accountGmail, string accountPassword) {
             return await accountRepository.getAccountAsync(accountGmail, accountPassword);
@@ -51,28 +51,37 @@ namespace BusinessLogic.Services
 
         public async Task<Account> GetAccountByAccGmail(string accGmail)
         {
-            return await _accountRepository.GetAccountByAccGmail(accGmail);
+            return await accountRepository.GetAccountByAccGmail(accGmail);
         }
 
         public async Task<Account> GetById(int id)
         {
-            return await _accountRepository.GetById(id);
+            return await accountRepository.GetById(id);
         }
 
         public Account loginAccount(string username, string password)
         {
-            return _accountRepository.loginAccount(username, password);
+            return accountRepository.loginAccount(username, password);
         }
 
         public string MD5Hash(string pwd)
         {
-            return _accountRepository.MD5Hash(pwd);
+            return accountRepository.MD5Hash(pwd);
         }
 
         public async Task Update(Account item)
         {
-             await _accountRepository.Update(item);
+             await accountRepository.Update(item);
         }
 
+        public Account getAccount(int accId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Account updateAccount(Account account)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

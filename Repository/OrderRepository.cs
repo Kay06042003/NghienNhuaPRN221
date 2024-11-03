@@ -30,16 +30,6 @@ namespace Repository
             await _orderDAO.AddOrderDetail(orderDetail);
         }
 
-        public Task Approve(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<Order>> GetListOrderConfirm()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<Order> getOrder(int orderId)
         {
            return await _orderDAO.getOrder(orderId);
@@ -53,11 +43,6 @@ namespace Repository
         public async Task<IEnumerable<Order>> getOrders(int userID)
         {
             return await _orderDAO.getOrders(userID);
-        }
-
-        public Task Reject(int id)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<List<int>> GetMonthlyOrders() => await _orderDAO.GetMonthlyOrders();
