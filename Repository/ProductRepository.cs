@@ -1,4 +1,4 @@
-﻿using DataAccess.DAO;
+using DataAccess.DAO;
 using Models;
 using Repository.Interfaces;
 using System;
@@ -29,5 +29,11 @@ namespace Repository
         {
             return await _productDAO.SearchProduct(txt);
         }
+
+        public async Task<IEnumerable<Product>> GetListAll() => await _productDAO.GetListAll();
+        public async Task<Product> GetById(int id) => await _productDAO.GetById(id);
+        public async Task Add(Product item) => await _productDAO.Add(item);
+        public async Task Update(Product item) => await _productDAO.Update(item);
+
     }
 }

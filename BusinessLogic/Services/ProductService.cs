@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Repository.Interfaces;
+using Repository;
 
 namespace BusinessLogic.Services
 {
@@ -20,7 +21,7 @@ namespace BusinessLogic.Services
         {
             return _productRepository.GetAll();
         }
-
+        
         public async Task<Product> GetProductByProID(int proId)
         {
             return await _productRepository.GetProductByProID(proId);
@@ -29,6 +30,28 @@ namespace BusinessLogic.Services
         public async Task<IEnumerable<Product>> SearchProduct(string txt)
         {
             return await _productRepository.SearchProduct(txt);
+        }
+
+        public async Task<IEnumerable<Product>> GetListAllProduct()
+        {
+            return await _productRepository.GetListAll();
+        }
+
+        public async Task<Product> GetProductById(int id)
+        {
+            return await _productRepository.GetById(id);
+        }
+
+        public async Task AddProduct(Product pro)
+        {
+            // Thêm logic nghiệp vụ nếu cần
+            await _productRepository.Add(pro);
+        }
+
+        public async Task UpdateProduct(Product pro)
+        {
+            // Thêm logic nghiệp vụ nếu cần
+            await _productRepository.Update(pro);
         }
     }
 }

@@ -5,6 +5,14 @@ using System.Threading.Tasks;
 using BusinessLogic.Interfaces;
 using Models;
 using Repository.Interfaces;
+using BusinessLogic.Interfaces;
+using Models;
+using Repository.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace BusinessLogic.Services
 {
@@ -29,5 +37,10 @@ namespace BusinessLogic.Services
         {
             await _userRepository.updateUserAsync(user);
         }
+        public async Task<User> GetUserByAccId(int id) 
+        { 
+            return  await _userRepository.GetUserByAccId(id);
+        }
     }
 }
+

@@ -12,7 +12,7 @@ namespace DataAccess.DAO
     {
         public async Task<IEnumerable<Switch>> GetListALl()
         {
-            return await _context.Switches.ToListAsync();
+            return await _context.Switches.Include(s => s.Pro).ToListAsync();
         }
 
         public async Task<Switch> GetById(int id)

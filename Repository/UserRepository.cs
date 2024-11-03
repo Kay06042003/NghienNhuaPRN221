@@ -1,10 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using DataAccess.DAO;
 using Models;
 using Repository.Interfaces;
+using DataAccess.DAO;
+using Models;
+using Repository.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Repository
 {
@@ -29,5 +33,14 @@ namespace Repository
         {
             await userDAO.updateUserAsync(user);
         }
+
+        public UserRepository(UserDAO _userDAO)
+        {
+            userDAO = _userDAO;
+        }
+
+        public async Task<User> GetUserByAccId(int id) =>  await userDAO.getUserByAccID(id);
+        
     }
 }
+

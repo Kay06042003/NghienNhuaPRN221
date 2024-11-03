@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,17 +21,15 @@ namespace BusinessLogic.Services
         {
             return accountRepository.addAccount(account);
         }
-
-        public Account getAccount(int accId)
+        public async Task Add(Account item)
         {
-            return accountRepository.getAccount(accId);
+            await _accountRepository.Add(item);
         }
 
-        public Account updateAccount(Account account)
+        public async Task Delete(int id)
         {
-            return accountRepository.updateAccount(account);
+            await _accountRepository.Delete(id);
         }
-
         public async Task<Account> getAccountAsync(string accountGmail, string accountPassword) {
             return await accountRepository.getAccountAsync(accountGmail, accountPassword);
         }
@@ -50,5 +48,31 @@ namespace BusinessLogic.Services
         {
             return await accountRepository.updateUserAsync(user);
         }
+
+        public async Task<Account> GetAccountByAccGmail(string accGmail)
+        {
+            return await _accountRepository.GetAccountByAccGmail(accGmail);
+        }
+
+        public async Task<Account> GetById(int id)
+        {
+            return await _accountRepository.GetById(id);
+        }
+
+        public Account loginAccount(string username, string password)
+        {
+            return _accountRepository.loginAccount(username, password);
+        }
+
+        public string MD5Hash(string pwd)
+        {
+            return _accountRepository.MD5Hash(pwd);
+        }
+
+        public async Task Update(Account item)
+        {
+             await _accountRepository.Update(item);
+        }
+
     }
 }

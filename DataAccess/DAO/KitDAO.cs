@@ -12,7 +12,7 @@ namespace DataAccess.DAO
     {
         public async Task<IEnumerable<Kit>> GetListALl()
         {
-            return await _context.Kits.ToListAsync();
+            return await _context.Kits.Include(k => k.Pro).ToListAsync();
         }
 
         public async Task<Kit> GetById(int id)

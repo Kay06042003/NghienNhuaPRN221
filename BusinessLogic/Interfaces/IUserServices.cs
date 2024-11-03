@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Models;
+using System.Text;
+
 
 namespace BusinessLogic.Interfaces
 {
@@ -11,5 +13,7 @@ namespace BusinessLogic.Interfaces
         Task<User> getUserAsync(int accId);
         Task addUserAsync(User user);
         Task updateUserAsync(User user);
+        Task<User> GetUserByAccId(int id);
     }
 }
+
