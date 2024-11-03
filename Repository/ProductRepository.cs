@@ -19,5 +19,15 @@ namespace Repository
         {
             return _productDAO.GetAll();   
         }
+
+        public async Task<Product> GetProductByProID(int proId)
+        {
+            return await _productDAO.GetProductByProID(proId);
+        }
+
+        public async Task<IEnumerable<Product>> SearchProduct(string txt)
+        {
+            return await _productDAO.SearchProduct(txt);
+        }
     }
 }

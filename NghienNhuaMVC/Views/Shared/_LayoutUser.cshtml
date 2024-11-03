@@ -1,0 +1,334 @@
+@using NghienNhuaMVC.Models;
+@using Microsoft.AspNetCore.Http;
+@using Newtonsoft.Json;
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Nghien_Nhua</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" asp-append-version="true" href="~/css/site.css" />
+    <link rel="stylesheet" asp-append-version="true" href="~/css/notificationCss.css">
+    <link rel="stylesheet" asp-append-version="true" href="~/css/style.css">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light navContainer">
+            <div class="container-fluid">
+                <div class="container-xxl">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+
+                        </button>
+                        <a class="navbar-brand" asp-action="Index" asp-controller="Product"><img style="width: 100px;"
+                                src="~/Images/Logo/z4705695345706_20ca59964f9ad379fcebb44ceaad6cd4-removebg-preview.png"
+                                alt=""></a>
+
+                        <div class="d-flex align-items-center">
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <div class="navbar-collapse-box d-flex align-items-center">
+                                    <form class="nav_search" action="">
+                                        <div>
+                                            <input oninput="funcSearch(this)" class="nav_search-box" name='txt'
+                                                type="search" placeholder="Tìm kiếm sản phẩm" data-bs-toggle="collapse"
+                                                href="#collapseExample" aria-expanded="false"
+                                                aria-controls="collapseExample" autocomplete="off">
+                                            <button class="nav_search-icon" type="submit"><i
+                                                    class="fa-solid fa-magnifying-glass"></i></button>
+                                            <div class="collapse" id="collapseExample">
+                                                <div id="content"
+                                                    class="searchBoxProduct bg-light shadow-sm p-3 mb-5 bg-body rounded"
+                                                    style="width: 300px; max-height: 700px; overflow: auto;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <ul class="navbar-nav mb-2 mb-lg-0">
+                                        <li class="nav-item">
+
+                                            <a class="nav-link" asp-action="Keyboard"
+                                                asp-controller="Product">KEYBOARD</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-action="Kit" asp-controller="Product">KIT BÀN
+                                                PHÍM</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-action="Keycap" asp-controller="Product">KEYCAP</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-action="Switch" asp-controller="Product">SWITCH</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-action="Mouse" asp-controller="Product">MOUSE</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-action="Earphone"
+                                                asp-controller="Product">EARPHONE</a>
+                                        </li>
+                                        @{
+                                            String acc = Context.Session.GetString("AccGmail");
+                                            if (acc != null)
+                                            {
+                                                 string role = Context.Session.GetString("role");
+                                                if (role == "2" || role == "3")
+                                                {
+                                                    <li class="nav-item support">
+                                                        <a class="nav-link" asp-action="Dashboard" asp-controller="Staff">QUẢN LÝ</a>
+                                                    </li>
+                                                }
+                                                else
+                                                {
+                                                    <li class="nav-item support">
+                                                        <a class="nav-link" asp-action="Index" asp-controller="User">HỒ SƠ</a>
+                                                    </li>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <li class="nav-item support">
+                                                    <a class="nav-link" asp-action="Login" asp-controller="Account">ĐĂNG
+                                                        NHẬP</a>
+                                                </li>
+
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="boxShop">
+                                <ul class="navbar-nav mb-2 mb-lg-0">
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-action="Index" asp-controller="Cart"><i
+                                                class="fa-solid fa-cart-shopping shop_icon"></i></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main role="main">
+        @RenderBody()
+    </main>
+
+    <div class="container-fuild backgroundFooter">
+        <div class="container-xxl ps-0 py-3">
+            <div class="info">
+                <div class="brand">
+                    <div class="describe_content-heading">
+                        <h2>NGHIỆN NHỰA</h2>
+                    </div>
+                    <div class="describe_content-body">
+                        <ul>
+                            <li>
+                                <p>Nghiện nhựa chuyên câp cấp các sản phẩm phân phối chính hãng</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="describe">
+                    <div class="describe_content">
+                        <div class="describe_content-heading">
+                            <h2>THÔNG TIN WEBSITE</h2>
+                        </div>
+                        <div class="describe_content-body">
+                            <ul>
+                                <li><a href="/ProductController/Keyboard">Keyboard</a></li>
+                                <li><a href="/ProductController/Kit-ban-phim">Kit bàn phím</a></li>
+                                <li><a href="/ProductController/Mouse">Mouse</a></li>
+                                <li><a href="/ProductController/Keycap">Keycap</a></li>
+                                <li><a href="/ProductController/Switch">Switch</a></li>
+                                <li><a href="/ProductController/Earphone">Earphone</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="describe_content">
+                        <div class="describe_content-heading">
+                            <h2>ĐIỀU KHOẢN SỬ DỤNG</h2>
+                        </div>
+                        <div class="describe_content-body">
+                            <ul>
+                                <li>
+                                    <p>Bảo mật thông tin</p>
+                                </li>
+                                <li>
+                                    <p>Quy chế website</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="describe_content">
+                        <div class="describe_content-heading">
+                            <h2>HOSTLINE</h2>
+                        </div>
+                        <div class="describe_content-body">
+                            <ul>
+                                <li>
+                                    <p>Đang mở cửa: Open 24/7</p>
+                                </li>
+                                <li>
+                                    <p>Số điện thoại cửa hàng: 0362023090</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="describe_content">
+                        <div class="describe_content-heading">
+                            <h2>LIÊN HỆ</h2>
+                        </div>
+                        <div class="describe_content-body">
+                            <ul>
+                                <li>
+                                    <p>0362023090</p>
+                                </li>
+                                <li>
+                                    <p>Hieuntce170328@fpt.edu.vn</p>
+                                </li>
+                                <li>
+                                    <p>fb.com/nghiennhua</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <p>Coppyright 2023 &copy; Nghiennghua.vn</p>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/notification.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script>
+        
+
+        var boxSearch = document.getElementById("collapseExample");
+        var txtSearch = document.getElementById("txtSearch");
+        document.addEventListener("click", function (e) {
+            if (e.target !== boxSearch) {
+                boxSearch.classList.remove("show");
+            }
+        })
+        function funcSearch(para) {
+            var txtSearch = para.value;
+            if (txtSearch.length > 3) {
+                $.ajax({
+                    url: "/Product/Search",
+                    type: "get",
+                    data: {
+                        txt: txtSearch
+                    },
+                    success: function (data) {
+                        // Xử lý kết quả tìm kiếm
+                        displaySearchResults(data);
+                        // Hiển thị collapse
+                        boxSearch.classList.add("show");
+                    },
+                    error: function (asfd) {
+                        // Xử lý lỗi nếu có
+                    }
+                });
+            }
+
+        }
+
+        function displaySearchResults(results) {
+            // Hiển thị kết quả tìm kiếm trong thẻ div có id="content"
+            var contentDiv = document.getElementById("content");
+            contentDiv.innerHTML = ""; // Xóa nội dung cũ trước khi hiển thị kết quả mới
+            var string = "";
+            results.forEach(function (item) {
+                var imgae = item.proImage.split("&");
+                // show all product
+                string += "<a class='text-decoration-none text-dark' href='/Product/ProductDetail/" + item.proId + "?proCategory=" + item.proCategory + "' class='searchBoxProduct-item'>"
+                    + "<div class='row' style='width: 100%; height: auto; font-size: 14px'>"
+                    + "<div class='col-3 p-0'>"
+                    + "<img src='/Images/Product/" + imgae[0] + "' style='width: 100%' alt=''>"
+                    + "</div>"
+                    + "<div class='col-7 p-0'>"
+                    + "<p class='d-block' style='word-wrap: break-word;'>" + item.proName + "</p>"
+                    + "</div>"
+                    + "<div class='col-2 p-0'>"
+                    + "<p style='font-size: 12px'>" + item.proPrice + "đ</p>"
+                    + "</div>"
+                    + "</div>"
+                    + "</a>";
+
+            });
+            contentDiv.innerHTML = string;
+        }
+        // validate form
+         const form = document.querySelector('#form');
+            const phone = document.getElementById('phone');
+
+            const setError = (element, message) => {
+                const inputControl = element.parentElement;
+                const errorDisplay = inputControl.querySelector('.form-message');
+                errorDisplay.innerText = message;
+                inputControl.classList.add('error');
+                inputControl.classList.remove('success');
+            };
+
+            const isValidPhoneNumber = phone => {
+                const regex = /^(0|\+84)(\s|\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\d)(\s|\.)?(\d{3})(\s|\.)?(\d{3})$/;
+                return regex.test(String(phone).toLowerCase());
+            };
+
+            const validateInputs = () => {
+                const phoneValue = phone.value.trim();
+                if (phoneValue === '') {
+                    phone.classList.add('invalid')
+                    phone.classList.remove('valid')
+                    setError(phone, 'Phone is required');
+                } else if (!isValidPhoneNumber(phoneValue)) {
+                    phone.classList.add('invalid')
+                    phone.classList.remove('valid')
+                    setError(phone, 'Provide a valid phone number');
+                } else {
+                    phone.classList.remove('invalid')
+                    phone.classList.add('valid')
+                    setSuccess(phone);
+                }
+            };
+
+            form.addEventListener('submit', function (e) {
+                debugger;
+                if (!validateInputs()) {
+                    e.preventDefault();
+                }
+            });
+
+
+    </script>
+
+     @{
+
+        if(TempData["Message"] != null)
+        {
+            <script>
+                createToast("@TempData["Message"]");
+            </script>
+            TempData["Message"] = null;
+        }
+    }
+</body>
+
+</html>

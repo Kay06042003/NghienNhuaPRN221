@@ -12,5 +12,9 @@ namespace Repository.Interfaces
         Account addAccount(Account account);
         Account getAccount(int accId);
         Account updateAccount(Account account);
+        Task<Account> getAccountAsync(string accountGmail, string accountPassword);
+        Task<Account> getUserAsync(string accountGmail);
+        Task<Account> getAccountAsync(string accountGmail);
+        Task<User> updateUserAsync(User user);
     }
 }

@@ -1,0 +1,187 @@
+@model IEnumerable<Cart>
+@using System.Globalization;
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+
+<ul class="notifications"></ul>
+<div class="main" style=" width: 100%; height: auto; padding-bottom: 50px;">
+    <div class="container" style=" height: auto;">
+        <div class="row">
+            <div class="col-md-8 left" style="border: none;">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th colspan="3" class="productName product1">
+                                Sản phẩm
+                            </th>
+                            <th class="productPrice product product1">
+                                Giá
+                            </th>
+                            <th class="productQuantity product">
+                                Số lượng
+                            </th>
+                            <th class="productTotal product">
+                                Tạm Tính
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="listBodyProduct">
+                        @{
+                            @* var convertInstance = new Nghien_Nhua.MyUtil.ConvertFunction(); *@
+
+                            int totalMoney = 0;
+                            // get list product from controller
+
+                            List<Product> products = ViewBag.products;
+                            for (int i = 0; i < @Model.Count(); i++)
+                            {
+                                Cart cart = @Model.ElementAt(i);
+                                Product pro = products[i];
+                                string[] imageList = pro.ProImage.Split("&");
+                                totalMoney += int.Parse(pro.ProPrice) * cart.CartQuantity ?? 0;
+                                var totalMoneyStr = totalMoney.ToString("#,0", CultureInfo.CreateSpecificCulture("vi-VN"));
+                                <tr>
+                                    <td class="tableItemFirst">
+                                        <button class="productRemove"><a asp-action="Delete" asp-controller="Cart"
+                                                asp-route-id="@cart.CartId">x</a></button>
+                                    </td>
+                                    <td>
+                                        <a asp-action="ProductDetail" asp-controller="Product" asp-route-id="@pro.ProId"
+                                            asp-route-proCategory="@pro.ProCategory">
+                                            <img class="productPicture " src="~/Images/Product/@imageList[0]" alt="">
+                                        </a>
+                                    </td>
+                                    <td class="tableItemThird">
+                                        <a class="productContent ItemProduct" asp-action="ProductDetail"
+                                            asp-controller="Product" asp-route-id="@pro.ProId"
+                                            asp-route-proCategory="@pro.ProCategory">
+                                            @pro.ProName
+                                        </a>
+                                    </td>
+                                    <td class="ItemProduct">
+                                        <span>
+                                            @{
+                                                var productPriceStr = int.Parse(pro.ProPrice).ToString("#,0", CultureInfo.CreateSpecificCulture("vi-VN"));
+                                            }
+                                            @productPriceStr
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex ItemProduct" style="width: 100px; text-align: center">
+                                            <span>
+                                                <div class="input-group mb-1" style="width: 100px;">
+                                                    <button class="btn-minus btn btn-white border border-secondary px-1"
+                                                        type="button" id="button-addon1_@i" data-proid="@pro.ProId" data-cartid="@cart.CartId"
+                                                        data-mdb-ripple-color="dark">
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
+                                                    <input type="number" name="txtQuantity"
+                                                        class="form-control text-center border border-secondary quantity-input"
+                                                        value="@cart.CartQuantity" placeholder="1"
+                                                        aria-label="Example text with button addon"
+                                                        aria-describedby="button-addon1" id="quantityInput_@i"
+                                                        data-proid="@pro.ProId"
+                                                        data-cartid="@cart.CartId"
+                                                         readonly style="width: 50px; padding: 0;" />
+                                                    <button class="btn-plus btn btn-white border border-secondary px-1"
+                                                        type="button" id="button-addon2_@i" data-proid="@pro.ProId" data-cartid="@cart.CartId"
+                                                        data-mdb-ripple-color="dark">
+                                                        <i class="fas fa-plus"></i>
+                                                    </button>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td class=" ItemProduct1" data-proid="@pro.ProId">
+                                        <span>
+                                            @{
+                                                int totalMoneyStr1 = int.Parse(pro.ProPrice) * cart.CartQuantity ?? 0;
+                                                var totalMoneyStr2 = totalMoneyStr1.ToString("#,0", CultureInfo.CreateSpecificCulture("vi-VN"));
+                                            }
+                                            @totalMoneyStr2
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-md-4 right">
+                <div class="container">
+                    <table class="table totalTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    CỘNG GIỎ HÀNG
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="amoutTable">
+                                <th>
+                                    Tạm tính
+                                </th>
+                                <td class="before">
+                                    @{
+                                        var totalMoneyStrTemp = totalMoney.ToString("#,0", CultureInfo.CreateSpecificCulture("vi-VN"));
+                                    }
+                                    @totalMoneyStrTemp
+                                </td>
+                            </tr>
+                            <tr class="shipmountTable">
+                                <th>Giao hàng</th>
+                                <td>
+                                    <ul>
+                                        <li>
+                                            <input type="radio" name="check" id="" value="" checked readonly>
+                                            <label for=""><span>Đồng giá: ₫20,000</span></label>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr class="amoutTable">
+                                <th>
+                                    Tổng
+                                </th>
+                                <td class="final">
+                                    @{
+                                        var totalMoneyAll = totalMoney + 20000;
+                                        var totalMoneyAllStr = totalMoneyAll.ToString("#,0", CultureInfo.CreateSpecificCulture("vi-VN"));
+                                    }
+                                    @totalMoneyAllStr
+                                </td>
+                            </tr>
+                            <tr>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class=" buttonPayment">
+                        <a class="text-decoration-none text-light d-block" style="width: 100%;height: 100%;line-height: 2.5;"
+                            asp-action="Order" asp-controller="Order" 
+                        >
+                            Tiến hành thanh toán
+                        </a>
+                    </div>
+                </div>
+                <div class="discountCode">
+                    <div class="discountCode-label">
+                        <i class="bi bi-tag-fill"></i>
+                        <span>
+                            Phiếu ưu đãi
+                        </span>
+                    </div>
+                    <input type="text" placeholder="Mã ưu đãi">
+                    <input type="submit" name="" id="" value="Áp dụng" class="submitCode">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

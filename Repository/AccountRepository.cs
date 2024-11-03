@@ -31,5 +31,23 @@ namespace Repository
         {
             return accountDAO.updateAccount(account);
         }
+        public async Task<Account> getAccountAsync(string accountGmail, string accountPassword) {
+            return await accountDAO.getAccountAsync(accountGmail, accountPassword);
+        }
+
+        public async Task<Account> getUserAsync(string accountGmail)
+        {
+            return await accountDAO.getUserAsync(accountGmail);
+        }
+
+        public async Task<Account> getAccountAsync(string accountGmail)
+        {
+            return await accountDAO.getAccountAsync(accountGmail);
+        }
+
+        public async Task<User> updateUserAsync(User user)
+        {
+            return await accountDAO.updateUserAsync(user);
+        }
     }
 }

@@ -40,6 +40,10 @@ const toastDetails = {
         icon: 'fa-circle-xmark',
         text: 'Error Sản phẩm vượt quá số lượng.',
     },
+    ErrorCart: {
+        icon: 'fa-circle-xmark',
+        text: 'Không có sản phẩm nào trong giỏ hàng.',
+    },
 }
 
 const removeToast = (toast) => {

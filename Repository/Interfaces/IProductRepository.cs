@@ -10,5 +10,7 @@ namespace Repository.Interfaces
     public interface IProductRepository
     {
         Task<IEnumerable<Product>> GetAll();
+        Task<Product> GetProductByProID(int proId);
+        Task<IEnumerable<Product>> SearchProduct(string txt);
     }
 }

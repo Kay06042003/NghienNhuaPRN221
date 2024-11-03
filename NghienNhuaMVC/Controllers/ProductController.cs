@@ -2,17 +2,25 @@
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using BusinessLogic.ViewModels;
+using NghienNhuaMVC.Middleware;
+using NghienNhuaMVC.Models;
+using Newtonsoft.Json;
 
 namespace NghienNhuaMVC.Controllers
 {
     public class ProductController : Controller
     {
         private readonly IProductService _productService;
+        private readonly IAccountServices _account;
+        private readonly ICartService _cartService;
 
-        public ProductController(IProductService productService)
+        public ProductController(IProductService productService, IAccountServices account, ICartService cartService)
         {
             _productService = productService;
+            _account = account;
+            _cartService = cartService;
         }
+
 
         public async Task<IActionResult> Keyboard()
         {
@@ -185,6 +193,59 @@ namespace NghienNhuaMVC.Controllers
 
         }
 
+        [ServiceFilter(typeof(UserAuthorizationFilter))]
+        public async Task<IActionResult> AddToCart(ProductViewModel pro)
+        {
+            // check login
+            String accJon = HttpContext.Session.GetString("AccGmail");
+
+            if (accJon == null || accJon.Equals(""))
+            {
+                TempData["Message"] = "login";
+                return RedirectToAction("ProductDetail", "Product", new { id = pro.Product.ProId, proCategory = pro.Product.ProCategory });
+            }
+            int quantity = (int)pro.Product.ProQuantity;
+            int proId = pro.Product.ProId;
+            var productModel = await _productService.GetProductByProID(proId);
+            int quantityProduct =  (int)productModel.ProQuantity;
+            if (quantity > quantityProduct)
+            {
+                TempData["Message"] = "ErrorAddtoCart";
+                return RedirectToAction("ProductDetail", "Product", new { id = pro.Product.ProId, proCategory = pro.Product.ProCategory });
+            }
+            else
+            {
+                Account account = JsonConvert.DeserializeObject<Account>(accJon);
+                Account acc = await _account.getUserAsync(account.AccGmail);
+                User user = acc.User;
+                
+                // check product in cart
+                Cart cart = await _cartService.GetCartByUserIdAndProductId(user.UserId, proId);
+                if (cart != null)
+                {
+                    var newQuantity = cart.CartQuantity + quantity;
+                    _cartService.UpdateCart(cart.CartId, newQuantity??0);
+                }
+                else
+                {
+                    Cart newCart = new Cart();
+                    newCart.ProId = pro.Product.ProId;
+                    newCart.CartQuantity = pro.Product.ProQuantity;
+                    newCart.UserId = user.UserId;
+                    await _cartService.AddCart(newCart);
+                    TempData["Message"] = "success";
+                    return RedirectToAction("ProductDetail", "Product", new { id = pro.Product.ProId, proCategory = pro.Product.ProCategory });
+                }
+            }
+            TempData["Message"] = "success";
+            return RedirectToAction("ProductDetail", "Product", new { id = pro.Product.ProId, proCategory = pro.Product.ProCategory });
+        }
+
+        public async Task<IActionResult> Search(string txt)
+        {
+            IEnumerable<Product> products = await _productService.SearchProduct(txt);
+            return Json(products);
+        }
 
     }
 }

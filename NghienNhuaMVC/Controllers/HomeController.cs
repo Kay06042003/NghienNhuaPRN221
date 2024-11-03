@@ -17,6 +17,13 @@ namespace NghienNhuaMVC.Controllers
 
         public async Task<IActionResult> Index()
         {
+            // get sesion
+            if (HttpContext.Session.GetString("status") != null)
+            {
+                var status = HttpContext.Session.GetString("status");
+                TempData["Message"] = status;
+                HttpContext.Session.Remove("status");
+            }
             // lay ra 8 san pham moi nhat
             IEnumerable<Product> products = await _productService.GetAll();
             products = products.OrderByDescending(p => p.ProId).Take(8).ToList();
