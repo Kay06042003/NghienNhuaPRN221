@@ -19,7 +19,7 @@
                    Grid.Column="1"
                    Grid.ColumnSpan="2"
                    Height="25"
-                   Text="Add new Keyboard"
+                   Text="Add new Earphone"
                    FontWeight="Bold"
                    FontSize="20"
                    TextAlignment="Center"

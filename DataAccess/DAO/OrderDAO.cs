@@ -159,8 +159,7 @@ namespace DataAccess.DAO
             var orders = await _context.Orders
             .AsNoTracking()
             .Where(o => o.OrderDate.ToString() == date && o.OrderStatus != "Waiting Accept - COD"
-            && o.OrderStatus != "Delivery successful - COD" && o.OrderStatus != "Delivery failed - COD" && o.OrderStatus != "Delivery failed - Banking" &&
-            o.OrderStatus != "Delivery successful - Banking")
+            && o.OrderStatus != "Delivery failed - COD" && o.OrderStatus != "Delivery failed - Banking" )
             .ToListAsync();
             return orders;
 
@@ -170,8 +169,7 @@ namespace DataAccess.DAO
             var orders = await _context.Orders
             .AsNoTracking()
             .Where(o => o.OrderDate.Value.Month == int.Parse(month) && o.OrderStatus != "Waiting Accept - COD"
-            && o.OrderStatus != "Delivery successful - COD" && o.OrderStatus != "Delivery failed - COD" && o.OrderStatus != "Delivery failed - Banking" &&
-            o.OrderStatus != "Delivery successful - Banking")
+           && o.OrderStatus != "Delivery failed - COD" && o.OrderStatus != "Delivery failed - Banking")
             .ToListAsync();
             return orders;
 
@@ -181,8 +179,8 @@ namespace DataAccess.DAO
             var orders = await _context.Orders
             .AsNoTracking()
             .Where(o => o.OrderDate.Value.Year == int.Parse(year) && o.OrderStatus != "Waiting Accept - COD"
-            && o.OrderStatus != "Delivery successful - COD" && o.OrderStatus != "Delivery failed - COD" && o.OrderStatus != "Delivery failed - Banking" &&
-            o.OrderStatus != "Delivery successful - Banking")
+            && o.OrderStatus != "Delivery failed - COD" && o.OrderStatus != "Delivery failed - Banking" 
+           )
             .ToListAsync();
             return orders;
 

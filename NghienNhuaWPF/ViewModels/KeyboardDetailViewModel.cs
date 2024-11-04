@@ -49,8 +49,8 @@ namespace NghienNhuaWPF.ViewModels
         private List<string> SaveImagesToFolder(List<string> imageFiles, ref bool imagesProcessed)
         {
             List<string> savedImages = new List<string>();
-            string projectRoot = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.Parent.FullName;
-            string folderPath = Path.Combine(projectRoot, "Images");
+            string projectRoot = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.Parent.Parent.FullName;
+            string folderPath = Path.Combine(projectRoot, "NghienNhuaMVC", "wwwroot", "Images", "Product");
 
             if (!Directory.Exists(folderPath))
             {
