@@ -199,7 +199,7 @@ namespace NghienNhuaWPF.ViewModels
 
         private List<string> SaveImagesToFolder(List<string> imageFiles, ref bool imagesProcessed)
         {
-            List<string> savedImages = new List<string>();
+            List<string> ListSavedImages = new List<string>();
             string projectRoot = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.Parent.Parent.FullName;
             string folderPath = Path.Combine(projectRoot, "NghienNhuaMVC", "wwwroot", "Images", "Product");
 
@@ -228,11 +228,11 @@ namespace NghienNhuaWPF.ViewModels
                 if (imagesProcessed)
                 {
                     File.Copy(file, destFileName, true);
-                    savedImages.Add(Path.GetFileName(file));
+                    ListSavedImages.Add(Path.GetFileName(file));
                 }
             }
 
-            return savedImages;
+            return ListSavedImages;
         }
 
         private async void AddKeycap(object obj)
@@ -247,9 +247,9 @@ namespace NghienNhuaWPF.ViewModels
                 if (selectedImageFiles != null && selectedImageFiles.Count > 0)
                 {
                     var savedImages = SaveImagesToFolder(selectedImageFiles, ref imagesProcessed);
-                    if (savedImages != null && savedImages.Count > 0)
+                    if (savedImages != null && savedImages.Count > 0) // co gia tri
                     {
-                        ProImage = string.Join("&", savedImages);
+                        ProImage = string.Join("&", savedImages); // gian gia tri cho ProImage
                     }
                 }
                 else

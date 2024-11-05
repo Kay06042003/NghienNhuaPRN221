@@ -64,7 +64,7 @@ namespace NghienNhuaWPF.ViewModels
                 Directory.CreateDirectory(folderPath);
             }
 
-            foreach (string file in imageFiles)
+            foreach (string file in imageFiles) // duyet qua tat ca cac file anh trong danh sach
             {
                 string destFileName = Path.Combine(folderPath, Path.GetFileName(file));
 

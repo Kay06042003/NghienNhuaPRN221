@@ -64,7 +64,7 @@ namespace NghienNhuaWPF.ViewModels
                 {
                     parts[0] = "0" + parts[0];
                 }
-                date = $"{parts[2]}-{parts[1]}-{parts[0]}";
+                date = $"{parts[2]}-{parts[0]}-{parts[1]}";
                 var orders = await _orderServices.GetOrderStatisticDay(date);
                 Orders.Clear();
 
