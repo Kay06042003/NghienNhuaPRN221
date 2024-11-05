@@ -99,6 +99,7 @@ namespace NghienNhuaMVC
 
             app.UseAuthorization();
             app.UseMiddleware<LoginMiddleware>();
+            app.UseEndpoints(endpoints => { endpoints.MapRazorPages(); });
 
             app.MapControllerRoute(
                 name: "default",

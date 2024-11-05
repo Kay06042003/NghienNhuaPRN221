@@ -146,11 +146,13 @@ namespace NghienNhuaMVC.Controllers
                     };
                     return View(productDetailViewModel2);
                 case "Keycap":
+                    // Lấy ra các sản phẩm category Keycap và id
                     var product3 = products.Where(p => p.ProCategory == "Keycap" && p.ProId == id).FirstOrDefault();
-                    if (product3 == null)
+                    if (product3 == null) // Nếu không có sản phẩm thì chuyển hướng về trang Keycap
                     {
                         return RedirectToAction("Keycap");
                     }
+                    // Lấy ra 2 sản phẩm mới nhất
                     var newProducts3 = products.OrderByDescending(p => p.ProId).Take(2).ToList();
                     ProductDetailViewModel productDetailViewModel3 = new ProductDetailViewModel()
                     {
